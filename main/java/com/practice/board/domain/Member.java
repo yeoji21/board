@@ -4,7 +4,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
 public class Member {
     private long id;
