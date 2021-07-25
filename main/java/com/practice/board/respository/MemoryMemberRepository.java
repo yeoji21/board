@@ -1,6 +1,6 @@
 package com.practice.board.respository;
 
-import com.practice.board.domain.Member;
+import com.practice.board.domain.member.Member;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,16 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class MemoryMemberRepository implements MemberRepository{
     private static Map<Long, Member> store = new HashMap<>();
     static long memberId = 0L;
 
     @Override
-    public Member saveMember(Member member) {
+    public int saveMember(Member member) {
         member.setId(++memberId);
         store.put(member.getId(), member);
-        return member;
+        return 1;
     }
 
     @Override

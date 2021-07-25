@@ -1,10 +1,12 @@
-package com.practice.board.domain;
+package com.practice.board.domain.member;
 
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
     private long id;
     private String loginId;
@@ -18,4 +20,5 @@ public class Member {
         this.name = name;
         this.description = description;
     }
+
 }
