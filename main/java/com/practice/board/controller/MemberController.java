@@ -2,6 +2,7 @@ package com.practice.board.controller;
 
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.form.MemberSaveForm;
+import com.practice.board.domain.member.form.MemberUpdateForm;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.respository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,32 @@ public class MemberController {
 //        Member saveMember = repository.saveMember(member);
         memberMapper.saveMember(member);
         return "redirect:/";
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public Member findMember(@PathVariable Long id) {
+        Member member = memberMapper.findById(id);
+        log.warn(member.toString());
+        return member;
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<Member> findAll() {
+        return memberMapper.findAll();
+    }
+
+    @PostMapping("/{id}")
+    @ResponseBody
+    public Member updateMember(@PathVariable Long id, @ModelAttribute("model")MemberUpdateForm updateForm) {
+        Member member = memberMapper.findById(id);
+        member.setPassword(updateForm.getPassword());
+        member.setName(updateForm.getName());
+        member.setDescription(updateForm.getDescription());
+        memberMapper.updateMember(id, member);
+        Member updatedMember = memberMapper.findById(id);
+        log.warn("updated = {}", updatedMember);
+        return member;
     }
 }

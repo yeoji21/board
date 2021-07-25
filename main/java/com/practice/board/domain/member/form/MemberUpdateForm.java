@@ -11,13 +11,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @ToString
-public class MemberSaveForm {
-    @NotBlank
-    private String loginId;
+public class MemberUpdateForm {
     @NotBlank
     private String password;
     @NotBlank
     private String name;
-
     private String description;
 }

@@ -13,14 +13,14 @@ public interface MemberMapper {
     int saveMember(@Param("member") Member member);
 
     //update
-    @Update("update member set login_id=#{member.loginId}, password=#{member.password}, name=#{member.name}, description=#{member.description} where id = #{member.id}")
-    Member updateMember(Long id, Member member);
+    @Update("update member set password=#{member.password}, name=#{member.name}, description=#{member.description} where id = #{id}")
+    void updateMember(@Param("id")Long id, @Param("member") Member member);
 
     @Select("select * from member where id = #{id}")
     @Results(id="MemberMap", value={
             @Result(property = "loginId", column="login_id"),
     })
-    Member findById(Long id);
+    Member findById(@Param("id") Long id);
 
     @Select("select * from member")
     @ResultMap("MemberMap")

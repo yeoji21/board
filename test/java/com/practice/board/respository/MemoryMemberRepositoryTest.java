@@ -13,14 +13,6 @@ class MemoryMemberRepositoryTest {
     MemberRepository memberRepository = new MemoryMemberRepository();
 
     @Test
-    void insert() {
-        Member member = new Member("test", "1234", "tester", "hi");
-        Member saveMember = memberRepository.saveMember(member);
-        log.warn(String.valueOf(saveMember));
-        assertThat(saveMember.getLoginId()).isEqualTo(member.getLoginId());
-    }
-
-    @Test
     void findById() {
         Member member1 = new Member("test1", "1234", "tester", "hi");
         Member member2 = new Member("test2", "1234", "tester", "hi");
