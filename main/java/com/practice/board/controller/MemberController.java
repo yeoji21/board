@@ -50,6 +50,7 @@ public class MemberController {
             return "member/addForm";
         }
 
+
         Member member = new Member();
         member.setLoginId(memberSaveForm.getLoginId());
         member.setDescription(memberSaveForm.getDescription());

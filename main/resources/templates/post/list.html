@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>list</title>
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container" style="max-width: 600px">
+        <div class="py-5 text-center">
+            <h2 th:text="#{list.posts}">list page</h2>
+            <p th:text="#{page.hello(${session.loginMember.name})}"></p>
+        </div>
+    </div>
+    <hr class="m-4">
+    <div>
+        <table class="table">
+            <thead>
+                <tr class="border-primary">
+                    <th style="width: 15%" th:text="#{list.post.id}"></th>
+                    <th style="width: 50%" th:text="#{list.post.title}"></th>
+                    <th style="width: 20%" th:text="#{list.post.name}"></th>
+                    <th style="width: 15%" th:text="#{list.post.date}"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="list : ${lists}">
+                    <td th:text="${list.id}"></td>
+                    <td><a href="#" th:href="@{|/post/${list.id}|}" th:text="${list.title}"></a></td>
+                    <td th:text="${list.name}"></td>
+                    <td th:text="${list.postDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn-group-sm btn btn-primary fa-align-right" type="button"
+                    th:onclick="|location.href='@{/post/add}'|">글 쓰기</button>
+        </div>
+        <div class="col">
+            <button class="btn-group-sm btn btn-primary" type="button"
+                    th:onclick="|location.href='/'|">홈으로</button>
+        </div>
+    </div>
+</body>
+
+</html>

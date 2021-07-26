@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>login</title>
+    <style>
+        .container{
+            max-width:560px;
+        }
+        .field-error {
+            border-color: red;
+            color:red;
+        }
+    </style>
+</head>
+<body>
+<form th:action method="post" th:object="${post}">
+    <table width="700" border="3" align="center">
+        <tr>
+            <td class="title">제 목</td>
+            <td>
+                <input th:field="*{title}" type="text" size="70" maxlength="100">
+            </td>
+        </tr>
+        <tr>
+            <td class="title">작성자</td>
+            <td><label th:text="${session.loginMember.name}"></label></td>
+        </tr>
+        <tr>
+            <td class="title">내 용</td>
+            <td>
+                <textarea th:field="*{content}" cols="72" rows="20"></textarea>
+<!--                <input th:field="*{content}" type="text">-->
+            </td>
+        </tr>
+    </table>
+    <button type="submit">등록</button>
+    <button type="button" th:onclick="|location.href='@{/post}'|">취소</button>
+</form>
+
+</body>
+</html>
