@@ -26,4 +26,10 @@ public interface MemberMapper {
     @ResultMap("MemberMap")
     List<Member> findAll();
 
+    @Select("select * from member where login_id=#{id}")
+    Member findByLoginID(@Param("id") String id);
+
+    @Select("select * from member where name = #{name}")
+    Member findByName(@Param("name") String name);
+
 }

@@ -21,6 +21,10 @@
         </div>
         <h4 class="mb-3">회원 정보 입력</h4>
         <form th:action method="post" th:object="${member}">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err:${#fields.globalErrors()}"
+                th:text="${err}"></p>
+            </div>
             <div>
                 <label for="loginId" th:text="#{label.member.loginID}">로그인 아이디</label>
                 <input type="text" id="loginId" th:field="*{loginId}" name="loginId"

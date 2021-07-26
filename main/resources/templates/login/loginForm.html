@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="kor" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>login</title>
+    <style>
+        .container{
+            max-width:560px;
+        }
+        .field-error {
+            border-color: red;
+            color:red;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2 th:text="#{login}">로그인</h2>
+        <form th:action th:object="${loginForm}" method="post">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                th:text="${err}"></p>
+            </div>
+            <div>
+                <label for="loginId" th:text="#{label.member.loginID}"></label>
+                <input type="text" id="loginId" th:field="*{loginId}" class="form-control" th:errorclass="field-error">
+                <div class="field-error" th:errors="*{loginId}"/>
+            </div>
+            <br class="my-4">
+            <diV>
+                <label for="password" th:text="#{label.member.password}"></label>
+                <input id="password" type="password" th:field="*{password}" class="form-control" th:errorclass="field-error">
+                <label class="field-error" th:errors="*{password}"/>
+            </diV>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg" type="submit" th:text="#{login}"></button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg" th:onclick="|location.href='@{/}'|" type="button">
+                        취소
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

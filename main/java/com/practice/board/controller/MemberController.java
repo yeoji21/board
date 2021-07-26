@@ -5,6 +5,7 @@ import com.practice.board.domain.member.form.MemberSaveForm;
 import com.practice.board.domain.member.form.MemberUpdateForm;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.respository.MemberRepository;
+import com.practice.board.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,8 @@ import java.util.List;
 public class MemberController {
 
     private final MemberMapper memberMapper;
-//    private final MemberRepository repository;
+    //    private final MemberRepository repository;
+    private final LoginService loginService;
 
     @GetMapping("/add")
     public String addMemberForm(@ModelAttribute("member")MemberSaveForm member) {
@@ -36,12 +38,23 @@ public class MemberController {
             return "member/addForm";
         }
 
+        if(loginService.dupIdCheck(memberSaveForm.getLoginId())){
+//            bindingResult.reject("duplicatedLoginId","중복 아이디입니다.");
+            bindingResult.rejectValue("loginId", "duplicatedLoginId", "중복 아이디입니다.");
+            return "member/addForm";
+
+        }
+
+        if (loginService.dupNameCheck(memberSaveForm.getName())) {
+            bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
+            return "member/addForm";
+        }
+
         Member member = new Member();
         member.setLoginId(memberSaveForm.getLoginId());
         member.setDescription(memberSaveForm.getDescription());
         member.setPassword(memberSaveForm.getPassword());
         member.setName(memberSaveForm.getName());
-//        Member saveMember = repository.saveMember(member);
         memberMapper.saveMember(member);
         return "redirect:/";
     }
@@ -68,8 +81,6 @@ public class MemberController {
         member.setName(updateForm.getName());
         member.setDescription(updateForm.getDescription());
         memberMapper.updateMember(id, member);
-        Member updatedMember = memberMapper.findById(id);
-        log.warn("updated = {}", updatedMember);
         return member;
     }
 }

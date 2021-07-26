@@ -11,14 +11,22 @@
         <h2>홈 화면</h2>
     </div>
     <div class="row">
+        <div class="text-center fw-bold">
+            <label th:text="|${member.name}님 반갑습니다.|"></label>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/members/add}'|" th:text="#{join}">
+            <button class="w-100 btn btn-dark btn-lg" type="button"
+                    th:onclick="|location.href='@{/board}'|" th:text="#{board}">
+                글 목록
             </button>
         </div>
         <div class="col">
-            <button class="w-100 btn btn-dark btn-lg"
-                    th:onclick="|location.href='@{/login}'|" type="button" th:text="#{login}">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    th:onclick="|location.href='@{/login/logout}'|" type="button">
+                로그아웃
             </button>
         </div>
     </div>
