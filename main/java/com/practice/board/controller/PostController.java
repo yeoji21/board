@@ -49,7 +49,7 @@ public class PostController {
         }
 
         Post post = new Post();
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         setPostMemberId(post, session);
         postService.setName(post, post.getMemberId());
         post.setTitle(postSaveForm.getTitle());
@@ -79,5 +79,12 @@ public class PostController {
         Post post = postMapper.getPost(id);
         model.addAttribute("post", post);
         return "post/editForm";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@Validated @ModelAttribute("post") PostSaveForm postSaveForm,
+                       @PathVariable("id")Long id) {
+        postMapper.updatePost(id, postSaveForm);
+        return "redirect:/post/{id}";
     }
 }
