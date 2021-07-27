@@ -29,9 +29,15 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public String postList(Model model) {
-        List<Post> list = postMapper.postList();
+    public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
+        if (page == 0) {
+            page = 1;
+        }
+        List<Post> list = postService.postPage(page);
         model.addAttribute("lists", list);
+        int count = postMapper.postCount();
+        int pages = count / 5 + 1;
+        model.addAttribute("pages", pages);
         return "post/list";
     }
 

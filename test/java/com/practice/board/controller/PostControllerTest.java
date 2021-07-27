@@ -6,12 +6,15 @@ import com.practice.board.mapper.PostMapper;
 import com.practice.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,5 +38,18 @@ class PostControllerTest {
         log.warn("===update===");
         Post post = postMapper.getPost(5L);
         log.warn("post={}", post.toString());
+    }
+
+    @Test
+    void pageList() {
+        List<Post> posts = postMapper.postPage
+                (0, 5);
+        log.warn("posts = {}", posts);
+    }
+
+    @Test
+    void pageCount() {
+        int count = postMapper.postCount();
+        Assertions.assertThat(count).isEqualTo(7);
     }
 }

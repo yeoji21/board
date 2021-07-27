@@ -45,6 +45,9 @@
                     th:onclick="|location.href='/'|">홈으로</button>
         </div>
     </div>
+    <ul th:each="page: ${#numbers.sequence(1,pages)}" style="list-style: none; float: left">
+        <li><a th:text="${page}" th:href="@{|/post?page=${page}|}"></a></li>
+    </ul>
 </body>
 
 </html>

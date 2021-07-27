@@ -36,6 +36,19 @@ public interface PostMapper {
     @Update("update post set title=#{post.title},content=#{post.content} where id=#{id}")
     void updatePost(@Param("id") Long id, @Param("post")PostSaveForm post);
 
+
+    //글 5개씩 가져오기
+    //글 id 기준으로 최신글 5개 뽑아옴
+    @Select("select * from post order by id desc limit #{start},#{end}")
+    @ResultMap("PostMapper")
+    List<Post> postPage(@Param("start") int start, @Param("end") int end);
+
+
+    @Select("select count(id) c from post")
+    @Result(column="c")
+    int postCount();
+
+
     //글 검색 <- 나중에 추가
 
 }
