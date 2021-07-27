@@ -1,6 +1,7 @@
 package com.practice.board.domain.post;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -13,8 +14,10 @@ public class Post {
     private Long id;
     private Long memberId;
     private String name;
+
     private String title;
     private String content;
+    @DateTimeFormat(pattern = "yyyy-MM-dd [HH:mm]")
     private Date postDate;
 
     public Post(Long memberId, String title, String content, Date postDate) {

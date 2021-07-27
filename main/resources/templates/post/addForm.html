@@ -15,6 +15,9 @@
     </style>
 </head>
 <body>
+<div class="py-5 text-center">
+    <h2>글 쓰기</h2>
+</div>
 <form th:action method="post" th:object="${post}">
     <table width="700" border="3" align="center">
         <tr>
@@ -35,8 +38,8 @@
             </td>
         </tr>
     </table>
-    <button type="submit">등록</button>
-    <button type="button" th:onclick="|location.href='@{/post}'|">취소</button>
+    <button type="submit" class="btn-group-sm btn btn-primary">등록</button>
+    <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">취소</button>
 </form>
 
 </body>

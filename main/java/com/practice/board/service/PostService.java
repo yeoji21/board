@@ -16,4 +16,5 @@ public class PostService {
         Member member = memberMapper.findById(id);
         post.setName(member.getName());
     }
+
 }

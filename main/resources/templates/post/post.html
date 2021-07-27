@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>login</title>
+    <style>
+        .container{
+            max-width:560px;
+        }
+        .field-error {
+            border-color: red;
+            color:red;
+        }
+    </style>
+</head>
+<body>
+<div class="py-5 text-center">
+    <h2>보기</h2>
+</div>
+<form th:action method="post" th:object="${post}">
+    <table width="700" border="3" align="center">
+        <tr>
+            <td class="title">제 목</td>
+            <td>
+                <label th:field="*{title}" type="text" size="70" maxlength="100"
+                th:text="*{title}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="title">작성자</td>
+            <td><label th:field="*{name}" th:text="*{name}"></label></td>
+        </tr>
+        <tr>
+            <td class="postDate">작성일</td>
+            <td><label th:field="*{postDate}" th:text="*{{postDate}}"></label></td>
+        </tr>
+        <tr>
+            <td class="title">내 용</td>
+            <td>
+                <textarea th:field="*{content}" cols="72" rows="20" disabled></textarea>
+                <!--                <input th:field="*{content}" type="text">-->
+            </td>
+        </tr>
+    </table>
+    <th:block th:if="${post.memberId} eq ${session.loginMember.id}">
+        <button type="button" class="btn-group-sm btn btn-primary"
+                th:onclick="|location.href='@{/post/edit/{id}(id=${post.id})}'|">수정</button>
+    </th:block>
+    <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">목록으로</button>
+</form>
+
+</body>
+</html>

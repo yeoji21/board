@@ -26,10 +26,11 @@
             </thead>
             <tbody>
                 <tr th:each="list : ${lists}">
+
                     <td th:text="${list.id}"></td>
                     <td><a href="#" th:href="@{|/post/${list.id}|}" th:text="${list.title}"></a></td>
                     <td th:text="${list.name}"></td>
-                    <td th:text="${list.postDate}"></td>
+                    <td th:text="${{list.postDate}}"></td>
                 </tr>
             </tbody>
         </table>

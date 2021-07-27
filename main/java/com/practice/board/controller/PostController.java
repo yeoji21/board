@@ -12,10 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,18 +32,17 @@ public class PostController {
     public String postList(Model model) {
         List<Post> list = postMapper.postList();
         model.addAttribute("lists", list);
-        log.warn("list ={}", list);
         return "post/list";
     }
 
     @GetMapping("/add")
-    public String addPost(@ModelAttribute("post")PostSaveForm postSaveForm) {
+    public String addPost(@ModelAttribute("post") PostSaveForm postSaveForm) {
         return "post/addForm";
     }
 
     @PostMapping("/add")
-    public String savePost(@Validated @ModelAttribute("post")PostSaveForm postSaveForm, BindingResult bindingResult,
-                           HttpServletRequest request) {
+    public String savePost(@Validated @ModelAttribute("post") PostSaveForm postSaveForm, BindingResult bindingResult,
+                           HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.warn("errors={}", bindingResult);
             return "post/addForm";
@@ -53,14 +50,34 @@ public class PostController {
 
         Post post = new Post();
         HttpSession session = request.getSession();
-        //이거 되면 메소드화
-        Member loginMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
-        post.setMemberId(loginMember.getId());
+        setPostMemberId(post, session);
         postService.setName(post, post.getMemberId());
         post.setTitle(postSaveForm.getTitle());
         post.setContent(postSaveForm.getContent());
         log.warn("post ={}", post.toString());
         postMapper.savePost(post);
-        return "redirect:/post";
+
+        redirectAttributes.addAttribute("id", post.getId());
+        return "redirect:/post/{id}";
+    }
+
+    private void setPostMemberId(Post post, HttpSession session) {
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        post.setMemberId(loginMember.getId());
+    }
+
+    @GetMapping("/{id}")
+    public String readPost(@PathVariable Long id, Model model) {
+        Post post = postMapper.getPost(id);
+        model.addAttribute("post", post);
+        log.warn("post={}", post);
+        return "post/post";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editForm(@ModelAttribute("post") PostSaveForm postSaveForm, @PathVariable("id") Long id, Model model) {
+        Post post = postMapper.getPost(id);
+        model.addAttribute("post", post);
+        return "post/editForm";
     }
 }
