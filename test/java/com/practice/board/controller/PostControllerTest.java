@@ -73,6 +73,7 @@ class PostControllerTest {
         else{
             count = count/5 +1;
         }
+        log.warn("깃 씨발 ");
         assertThat(count).isEqualTo(1);
     }
 }
