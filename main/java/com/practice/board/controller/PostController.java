@@ -77,6 +77,7 @@ public class PostController {
         post.setTitle(postSaveForm.getTitle());
         post.setContent(postSaveForm.getContent());
         log.warn("test");
+        log.warn("email setting");
         return post;
     }
 
