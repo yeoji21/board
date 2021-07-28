@@ -76,6 +76,7 @@ public class PostController {
         postService.setName(post, post.getMemberId());
         post.setTitle(postSaveForm.getTitle());
         post.setContent(postSaveForm.getContent());
+        log.warn("test");
         return post;
     }
 
