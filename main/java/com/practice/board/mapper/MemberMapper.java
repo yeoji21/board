@@ -10,7 +10,7 @@ public interface MemberMapper {
 
     @Insert("insert into member(login_id,password,name,description) values(#{member.loginId},#{member.password},#{member.name},#{member.description})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    int saveMember(@Param("member") Member member);
+    void saveMember(@Param("member") Member member);
 
     //update
     @Update("update member set password=#{member.password}, name=#{member.name}, description=#{member.description} where id = #{id}")

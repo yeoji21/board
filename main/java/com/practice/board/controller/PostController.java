@@ -24,21 +24,18 @@ import java.util.List;
 @RequestMapping("/post")
 @RequiredArgsConstructor
 public class PostController {
-
     private final PostMapper postMapper;
     private final PostService postService;
 
     @GetMapping
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
-        if (page == 0) {
-            page = 1;
-        }
-        List<Post> list = postService.postPage(page);
-        model.addAttribute("lists", list);
-        int count = postMapper.postCount();
-        int pages = count / 5 + 1;
-        model.addAttribute("pages", pages);
+//        if (page == 0) {
+//            page = 1;
+//        }
+        model.addAttribute("lists", postService.postPage(page));
+        model.addAttribute("pages", postMapper.postCount() / 5 + 1);
         return "post/list";
+
     }
 
     @GetMapping("/add")

@@ -18,8 +18,7 @@ public class PostService {
     private final PostMapper postMapper;
 
     public void setName(Post post, Long id) {
-        Member member = memberMapper.findById(id);
-        post.setName(member.getName());
+        post.setName(memberMapper.findById(id).getName());
     }
 
     public List<Post> postPage(int page) {
