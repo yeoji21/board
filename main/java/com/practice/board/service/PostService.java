@@ -21,7 +21,7 @@ public class PostService {
         post.setName(memberMapper.findById(id).getName());
     }
 
-    public List<Post> postPage(int page) {
+    public List<Post> getFivePost(int page) {
         int start = (page - 1)*5;
         return postMapper.postPage(start, start + 5);
     }

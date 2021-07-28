@@ -31,6 +31,7 @@ public class MemberController {
     @PostMapping("/add")
     public String addMember(@Validated @ModelAttribute("member") MemberSaveForm memberSaveForm, BindingResult bindingResult) {
         if (bindingErrorCheck(memberSaveForm, memberService, bindingResult)) {
+            log.warn("errors = {}", bindingResult);
             return "member/addForm";
         }
         memberMapper.saveMember(MemberSaveFormToMember(memberSaveForm));

@@ -6,6 +6,7 @@ import com.practice.board.domain.member.form.SessionConst;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/login")
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
@@ -30,6 +32,7 @@ public class LoginController {
     public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult,
                         HttpServletRequest request, @RequestParam(defaultValue = "/")String redirectURL) {
         if (loginErrorCheck(loginForm, memberService, bindingResult)) {
+            log.warn("errors = {}", bindingResult);
             return "login/loginForm";
         }
         createLoginSession(request, memberMapper.findByLoginID(loginForm.getLoginId()));
