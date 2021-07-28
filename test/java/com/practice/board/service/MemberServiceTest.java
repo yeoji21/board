@@ -15,6 +15,7 @@ class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
+
     @Test
     void passwordCheck() {
         boolean check = memberService.loginCheck("jiwon", "1234!");
@@ -34,7 +35,11 @@ class MemberServiceTest {
         String name = "silva21!!";
         String id = "jiwon";
         boolean check = memberService.dupNameCheck(name) || memberService.dupIdCheck(id);
-
         assertThat(check).isEqualTo(true);
+    }
+
+    @Test
+    void deletePost() {
+
     }
 }

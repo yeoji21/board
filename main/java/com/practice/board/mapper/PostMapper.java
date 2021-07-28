@@ -30,7 +30,7 @@ public interface PostMapper {
 
     //글 삭제
     @Delete("delete from post where id=#{id}")
-    void deletePost(@Param("id") Long id);
+    int deletePost(@Param("id") Long id);
 
 
     @Update("update post set title=#{post.title},content=#{post.content} where id=#{id}")
@@ -43,10 +43,11 @@ public interface PostMapper {
     @ResultMap("PostMapper")
     List<Post> postPage(@Param("start") int start, @Param("end") int end);
 
-
+    //전체 글 수 조회
     @Select("select count(id) c from post")
     @Result(column="c")
     int postCount();
+
 
 
     //글 검색 <- 나중에 추가

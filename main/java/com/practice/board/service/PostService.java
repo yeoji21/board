@@ -26,4 +26,12 @@ public class PostService {
         return postMapper.postPage(start, start + 5);
     }
 
+    public int totalPages() {
+        int count = postMapper.postCount();
+        if (count % 5 == 0) {
+            return count/5;
+        }
+        return count/5+1;
+    }
+
 }

@@ -13,9 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -50,6 +52,27 @@ class PostControllerTest {
     @Test
     void pageCount() {
         int count = postMapper.postCount();
-        Assertions.assertThat(count).isEqualTo(7);
+        assertThat(count).isEqualTo(7);
+    }
+
+    @Test
+    @Transactional
+    void deletePage() {
+        int test = postMapper.deletePost(11L);
+        assertThat(test).isEqualTo(1);
+    }
+
+
+    @Test
+    void totalPages() {
+//        int count = postMapper.postCount();
+        int count = 5;
+        if (count % 5 == 0) {
+            count = count / 5;
+        }
+        else{
+            count = count/5 +1;
+        }
+        assertThat(count).isEqualTo(1);
     }
 }

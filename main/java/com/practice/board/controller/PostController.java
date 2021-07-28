@@ -28,7 +28,7 @@ public class PostController {
     @GetMapping
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
         model.addAttribute("lists", postService.getFivePost(page));
-        model.addAttribute("pages", postMapper.postCount() / 5 + 1);
+        model.addAttribute("pages", postService.totalPages());
         return "post/list";
     }
 
@@ -70,14 +70,18 @@ public class PostController {
         return "redirect:/post/{id}";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deletePost(@PathVariable("id")Long id) {
+        postMapper.deletePost(id);
+        return "redirect:/post";
+    }
+
     private Post postSaveFormToPost(PostSaveForm postSaveForm, HttpServletRequest request) {
         Post post = new Post();
         setPostMemberId(post, request.getSession(false));
         postService.setName(post, post.getMemberId());
         post.setTitle(postSaveForm.getTitle());
         post.setContent(postSaveForm.getContent());
-        log.warn("test");
-        log.warn("email setting");
         return post;
     }
 
