@@ -18,7 +18,8 @@
 <div class="py-5 text-center">
     <h2>글 쓰기</h2>
 </div>
-<form th:action method="post" th:object="${post}">
+<form th:action="@{/post/edit}" method="post" th:object="${post}">
+    <input type="hidden" th:value="*{id}" name="id">
     <div th:if="${#fields.hasGlobalErrors()}">
     <p class="field-error" th:each="err:${#fields.globalErrors()}"
        th:text="${err}"></p>

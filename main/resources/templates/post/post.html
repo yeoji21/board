@@ -18,7 +18,8 @@
 <div class="py-5 text-center">
     <h2>보기</h2>
 </div>
-<form th:action method="post" th:object="${post}">
+<form th:action="@{/post/editForm}" method="post" th:object="${post}">
+    <input type="hidden" th:value="*{id}" name="id">
     <table width="700" border="3" align="center">
         <tr>
             <td class="title">제 목</td>
@@ -44,8 +45,7 @@
         </tr>
     </table>
     <th:block th:if="${post.memberId} eq ${session.loginMember.id}">
-        <button type="button" class="btn-group-sm btn btn-primary"
-                th:onclick="|location.href='@{/post/edit/{id}(id=${post.id})}'|">수정</button>
+        <button type="submit" class="btn-group-sm btn btn-primary">수정</button>
         <button type="button" class="btn-group-sm btn btn-primary"
                 th:onclick="|location.href='@{/post/delete/{id}(id=${post.id})}'|">삭제</button>
 

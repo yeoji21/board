@@ -66,6 +66,30 @@ public class PostController {
         return "post/editForm";
     }
 
+    @PostMapping("/editForm")
+    public String editFormV2(@ModelAttribute("post") PostEditForm postEditForm,
+                             @RequestParam("id") Long id,Model model) {
+        model.addAttribute("post", postMapper.getPost(id));
+        return "post/editForm";
+    }
+
+    @PostMapping("/edit")
+    public String editV2(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
+                        @RequestParam("id") Long id,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            log.warn("errors = {}", bindingResult);
+            return "post/editForm";
+        }
+        HttpSession session = request.getSession(false);
+        Member member = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        postEditForm.setName(member.getName());
+        Date date = new Date();
+        postEditForm.setPostDate(date);
+        postMapper.updatePost(id, postEditForm);
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/post/{id}";
+    }
+
     @PostMapping("/edit/{id}")
     public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
                        @PathVariable("id") Long id, HttpServletRequest request) {
