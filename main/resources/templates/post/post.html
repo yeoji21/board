@@ -46,8 +46,6 @@
     </table>
     <th:block th:if="${post.memberId} eq ${session.loginMember.id}">
         <button type="submit" class="btn-group-sm btn btn-primary">수정</button>
-            <!--<button type="button" class="btn-group-sm btn btn-primary"
-                    th:onclick="|location.href='@{/post/delete/{id}(id=${post.id})}'|">삭제</button>-->
     </th:block>
     <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">목록으로</button>
 </form>

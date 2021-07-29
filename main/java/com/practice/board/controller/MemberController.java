@@ -4,7 +4,6 @@ import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.member.form.MemberMyPageForm;
 import com.practice.board.domain.member.form.MemberSaveForm;
-import com.practice.board.domain.member.form.MemberUpdateForm;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
 import io.swagger.annotations.Api;
@@ -43,7 +42,7 @@ public class MemberController {
             log.warn("errors = {}", bindingResult);
             return "member/addForm";
         }
-        memberMapper.saveMember(MemberSaveFormToMember(memberSaveForm));
+        memberMapper.saveMember(memberSaveFormToMember(memberSaveForm));
         return "redirect:/";
     }
 
@@ -51,11 +50,8 @@ public class MemberController {
     @ApiOperation(value="마이페이지로 이동", notes="마이 페이지를 보여줌")
     public String memberMyPage(@ModelAttribute("member") MemberMyPageForm memberMyPageForm, HttpServletRequest request,
                                Model model){
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "login/loginForm";
-        }
-        Member findMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        Member findMember = getMemberFromSession(request);
+        if (findMember == null) return "login/loginForm";
         model.addAttribute("member", findMember);
         return "member/myPage";
     }
@@ -64,38 +60,32 @@ public class MemberController {
     @ApiOperation(value="마이 페이지 수정", notes="마이 페이지 정보에대해 수정한 것을 적용")
     public String myPageEdit(@Validated @ModelAttribute("member") MemberMyPageForm memberMyPageForm,
                              BindingResult bindingResult, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
+        if (myPageEditErrorCheck(bindingResult, memberService, memberMyPageForm)) {
             return "member/myPage";
         }
+        Member findMember = getMemberFromSession(request);
+        if(findMember == null) return "login/loginForm";
 
-        if (memberService.dupNameCheck(memberMyPageForm.getName())) {
-            bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
-            return "member/myPage";
-        }
-
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "login/loginForm";
-        }
-        Member findMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
-        findMember.setName(memberMyPageForm.getName());
-        findMember.setDescription(memberMyPageForm.getDescription());
-        log.warn("findMember = {}", findMember.toString());
+        memberUpdateNameAndDescription(memberMyPageForm, findMember);
         memberMapper.updateMember(findMember.getId(),findMember);
         //비밀번호 변경은 보류
         return "redirect:/members/myPage";
     }
 
-
-    private Member MemberEditFormToMember(Long id, MemberUpdateForm updateForm) {
-        Member member = memberMapper.findById(id);
-        member.setPassword(updateForm.getPassword());
-        member.setName(updateForm.getName());
-        member.setDescription(updateForm.getDescription());
-        return member;
+    private void memberUpdateNameAndDescription(MemberMyPageForm memberMyPageForm, Member findMember) {
+        findMember.setName(memberMyPageForm.getName());
+        findMember.setDescription(memberMyPageForm.getDescription());
     }
 
-    private Member MemberSaveFormToMember(MemberSaveForm memberSaveForm) {
+    private boolean myPageEditErrorCheck(BindingResult bindingResult, MemberService memberService, MemberMyPageForm memberMyPageForm) {
+        boolean nameCheck = memberService.dupNameCheck(memberMyPageForm.getName());
+        if (nameCheck) {
+            bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
+        }
+        return nameCheck || bindingResult.hasErrors();
+    }
+
+    private Member memberSaveFormToMember(MemberSaveForm memberSaveForm) {
         Member member = new Member();
         member.setLoginId(memberSaveForm.getLoginId());
         member.setDescription(memberSaveForm.getDescription());
@@ -109,12 +99,19 @@ public class MemberController {
         if(nameCheck){
             bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
         }
-
         boolean idCheck = memberService.dupIdCheck(memberSaveForm.getLoginId());
         if (idCheck) {
             bindingResult.rejectValue("loginId", "duplicatedLoginId", "중복 아이디입니다.");
         }
 
         return nameCheck || idCheck || bindingResult.hasErrors();
+    }
+
+    private Member getMemberFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return null;
+        }
+        return (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 }

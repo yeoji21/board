@@ -68,8 +68,7 @@ public class PostController {
 
     @PostMapping("/editForm")
     @ApiOperation(value="게시글 수정 화면으로 이동", notes="게시글 수정 화면으로 이동")
-    public String editFormV2(@ModelAttribute("post") PostEditForm postEditForm,
-                             @RequestParam("id") Long id,Model model) {
+    public String editFormV2(@ModelAttribute("post") PostEditForm postEditForm, @RequestParam("id") Long id,Model model) {
         model.addAttribute("post", postMapper.getPost(id));
         return "post/editForm";
     }
@@ -78,15 +77,11 @@ public class PostController {
     @ApiOperation(value="게시글 수정 적용", notes="게시글 수정 화면에서 입력한 정보로 게시글을 수정")
     public String editV2(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
                         @RequestParam("id") Long id,HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
+        if (postErrorCheck(bindingResult)) {
             log.warn("errors = {}", bindingResult);
             return "post/editForm";
         }
-        HttpSession session = request.getSession(false);
-        Member member = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
-        postEditForm.setName(member.getName());
-        Date date = new Date();
-        postEditForm.setPostDate(date);
+        postEditFormSetProperties(postEditForm, request);
         postMapper.updatePost(id, postEditForm);
         redirectAttributes.addAttribute("id", id);
         return "redirect:/post/{id}";
@@ -118,5 +113,10 @@ public class PostController {
         }
         Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
         post.setMemberId(loginMember.getId());
+    }
+
+    private void postEditFormSetProperties(PostEditForm postEditForm, HttpServletRequest request) {
+        postEditForm.setName(((Member) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getName());
+        postEditForm.setPostDate(new Date());
     }
 }
