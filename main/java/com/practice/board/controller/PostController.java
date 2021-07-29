@@ -3,6 +3,7 @@ package com.practice.board.controller;
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.post.Post;
+import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
 import com.practice.board.mapper.PostMapper;
 import com.practice.board.service.PostService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
 @Slf4j
@@ -58,19 +60,25 @@ public class PostController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@ModelAttribute("post") PostSaveForm postSaveForm, @PathVariable("id") Long id,
+    public String editForm(@ModelAttribute("post") PostEditForm postEditForm, @PathVariable("id") Long id,
                            Model model) {
         model.addAttribute("post", postMapper.getPost(id));
         return "post/editForm";
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@Validated @ModelAttribute("post") PostSaveForm postSaveForm, BindingResult bindingResult,
+    public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
                        @PathVariable("id") Long id, HttpServletRequest request) {
-//        HttpSession session = request.getSession(false);
-//        Member member = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
-//        Post post = postSaveFormToPost(postSaveForm, request);
-        postMapper.updatePost(id, postSaveForm);
+        if (bindingResult.hasErrors()) {
+            log.warn("errors = {}", bindingResult);
+            return "post/editForm";
+        }
+        HttpSession session = request.getSession(false);
+        Member member = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        postEditForm.setName(member.getName());
+        Date date = new Date();
+        postEditForm.setPostDate(date);
+        postMapper.updatePost(id, postEditForm);
         return "redirect:/post/{id}";
     }
 

@@ -19,24 +19,31 @@
     <h2>글 쓰기</h2>
 </div>
 <form th:action method="post" th:object="${post}">
+    <div th:if="${#fields.hasGlobalErrors()}">
+    <p class="field-error" th:each="err:${#fields.globalErrors()}"
+       th:text="${err}"></p>
+    </div>
+
     <table width="700" border="3" align="center">
         <tr>
             <td class="title">제 목</td>
             <td>
-                <input th:field="*{title}" type="text" size="70" maxlength="100">
+                <input th:field="*{title}" type="text" size="70" maxlength="100" th:errorclass="field-error">
+                <div class="field-error" th:errors="*{title}"></div>
             </td>
         </tr>
         <tr>
             <td class="title">작성자</td>
             <td><label th:text="${session.loginMember.name}"></label></td>
-<!--            <td><label th:text="*{name}"></label></td>-->
+<!--            <td><label th:field="*{name}" th:text="*{name}" th:errorclass="field-error"></label></td>-->
+<!--            <div class="field-error" th:errors="*{name}"></div>-->
 <!--            <input type="hidden" th:field="*{name}">-->
         </tr>
         <tr>
             <td class="title">내 용</td>
             <td>
-                <textarea th:field="*{content}" cols="72" rows="20"
-                th:text="*{content}"></textarea>
+                <textarea th:field="*{content}" cols="72" rows="20" th:text="*{content}" th:errorclass="field-error"></textarea>
+                <div class="field-error" th:errors="*{content}"></div>
                 <!--                <input th:field="*{content}" type="text">-->
             </td>
         </tr>

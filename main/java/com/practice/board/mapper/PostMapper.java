@@ -1,6 +1,7 @@
 package com.practice.board.mapper;
 
 import com.practice.board.domain.post.Post;
+import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
 import org.apache.ibatis.annotations.*;
 
@@ -33,8 +34,8 @@ public interface PostMapper {
     int deletePost(@Param("id") Long id);
 
 
-    @Update("update post set title=#{post.title},content=#{post.content} where id=#{id}")
-    void updatePost(@Param("id") Long id, @Param("post")PostSaveForm post);
+    @Update("update post set name=#{post.name},title=#{post.title},content=#{post.content},post_date=#{post.postDate} where id=#{id}")
+    void updatePost(@Param("id") Long id, @Param("post") PostEditForm post);
 
 
     //글 5개씩 가져오기
