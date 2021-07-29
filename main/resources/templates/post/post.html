@@ -46,12 +46,16 @@
     </table>
     <th:block th:if="${post.memberId} eq ${session.loginMember.id}">
         <button type="submit" class="btn-group-sm btn btn-primary">수정</button>
-        <button type="button" class="btn-group-sm btn btn-primary"
-                th:onclick="|location.href='@{/post/delete/{id}(id=${post.id})}'|">삭제</button>
-
+            <!--<button type="button" class="btn-group-sm btn btn-primary"
+                    th:onclick="|location.href='@{/post/delete/{id}(id=${post.id})}'|">삭제</button>-->
     </th:block>
     <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">목록으로</button>
 </form>
-
+<th:block th:if="${post.memberId} eq ${session.loginMember.id}">
+    <form method="post" th:action="@{/post/delete}">
+        <input type="hidden" th:value="${post.id}" name="id"/>
+        <button type="submit" class="btn-group-sm btn btn-primary">삭제</button>
+    </form>
+</th:block>
 </body>
 </html>

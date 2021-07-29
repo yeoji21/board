@@ -5,6 +5,8 @@ import com.practice.board.domain.member.form.LoginForm;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,16 +21,19 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 @RequiredArgsConstructor
 @Slf4j
+@Api(tags="로그인 API")
 public class LoginController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
     @GetMapping
+    @ApiOperation(value="로그인 화면으로 이동", notes="로그인 화면으로 이동")
     public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm) {
         return "login/loginForm";
     }
 
     @PostMapping
+    @ApiOperation(value="로그인 처리", notes="사용자의 입력을 받아 로그인 처리")
     public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult,
                         HttpServletRequest request, @RequestParam(defaultValue = "/")String redirectURL) {
         if (loginErrorCheck(loginForm, memberService, bindingResult)) {
@@ -40,6 +45,7 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
+    @ApiOperation(value="로그아웃", notes="로그아웃")
     public String logout(HttpServletRequest request) {
         invalidateSession(request);
         return "redirect:/";

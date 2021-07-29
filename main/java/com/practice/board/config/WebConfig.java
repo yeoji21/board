@@ -1,4 +1,4 @@
-package com.practice.board;
+package com.practice.board.config;
 
 import com.practice.board.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "*.ico", "/error", "/", "/members/add", "/login/**", "/home");
+                .excludePathPatterns("/css/**", "*.ico", "/error", "/",
+                        "/members/add", "/login/**", "/home",
+                        "/swagger-ui/**","/webjars/**","/swagger-resources/**","/swagger-ui.html","/v2/**");
     }
 }

@@ -7,6 +7,8 @@ import com.practice.board.domain.member.form.MemberSaveForm;
 import com.practice.board.domain.member.form.MemberUpdateForm;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,17 +24,20 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/members")
 @RequiredArgsConstructor
 @Slf4j
+@Api(tags="사용자 컨트롤러")
 public class MemberController {
 
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
     @GetMapping("/add")
+    @ApiOperation(value="회원가입 화면으로 이동", notes="회원가입 화면으로 이동")
     public String addMemberForm(@ModelAttribute("member")MemberSaveForm member) {
         return "member/addForm";
     }
 
     @PostMapping("/add")
+    @ApiOperation(value="회원가입 처리", notes="사용자의 입력을 검사하고 회원가입 정보를 db에 저장")
     public String addMember(@Validated @ModelAttribute("member") MemberSaveForm memberSaveForm, BindingResult bindingResult) {
         if (bindingErrorCheck(memberSaveForm, memberService, bindingResult)) {
             log.warn("errors = {}", bindingResult);
@@ -43,6 +48,7 @@ public class MemberController {
     }
 
     @GetMapping("/myPage")
+    @ApiOperation(value="마이페이지로 이동", notes="마이 페이지를 보여줌")
     public String memberMyPage(@ModelAttribute("member") MemberMyPageForm memberMyPageForm, HttpServletRequest request,
                                Model model){
         HttpSession session = request.getSession(false);
@@ -55,6 +61,7 @@ public class MemberController {
     }
 
     @PostMapping("/myPage")
+    @ApiOperation(value="마이 페이지 수정", notes="마이 페이지 정보에대해 수정한 것을 적용")
     public String myPageEdit(@Validated @ModelAttribute("member") MemberMyPageForm memberMyPageForm,
                              BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {

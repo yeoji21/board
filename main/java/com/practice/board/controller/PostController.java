@@ -7,6 +7,8 @@ import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
 import com.practice.board.mapper.PostMapper;
 import com.practice.board.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,11 +25,13 @@ import java.util.Date;
 @Slf4j
 @RequestMapping("/post")
 @RequiredArgsConstructor
+@Api(tags = "게시글 컨트롤러")
 public class PostController {
     private final PostMapper postMapper;
     private final PostService postService;
 
     @GetMapping
+    @ApiOperation(value="게시판 화면 출력", notes="post의 id의 역순으로 게시물 5개씩 가져옴")
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
         model.addAttribute("lists", postService.getFivePost(page));
         model.addAttribute("pages", postService.totalPages());
@@ -35,11 +39,13 @@ public class PostController {
     }
 
     @GetMapping("/add")
+    @ApiOperation(value="게시물ㄷ2 추가 화면으로 이동", notes="글 쓰기 화면으로 이동")
     public String addPost(@ModelAttribute("post") PostSaveForm postSaveForm) {
         return "post/addForm";
     }
 
     @PostMapping("/add")
+    @ApiOperation(value="게시물 저장", notes="글 쓰기를 화면에 입력한 정보를 검토하고 db에 저장함")
     public String savePost(@Validated @ModelAttribute("post") PostSaveForm postSaveForm, BindingResult bindingResult,
                            HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (postErrorCheck(bindingResult)) {
@@ -54,19 +60,14 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value="게시글 읽기", notes="게시글 id를 통해 게시물 하나를 읽어옴")
     public String readPost(@PathVariable Long id, Model model) {
         model.addAttribute("post", postMapper.getPost(id));
         return "post/post";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editForm(@ModelAttribute("post") PostEditForm postEditForm, @PathVariable("id") Long id,
-                           Model model) {
-        model.addAttribute("post", postMapper.getPost(id));
-        return "post/editForm";
-    }
-
     @PostMapping("/editForm")
+    @ApiOperation(value="게시글 수정 화면으로 이동", notes="게시글 수정 화면으로 이동")
     public String editFormV2(@ModelAttribute("post") PostEditForm postEditForm,
                              @RequestParam("id") Long id,Model model) {
         model.addAttribute("post", postMapper.getPost(id));
@@ -74,6 +75,7 @@ public class PostController {
     }
 
     @PostMapping("/edit")
+    @ApiOperation(value="게시글 수정 적용", notes="게시글 수정 화면에서 입력한 정보로 게시글을 수정")
     public String editV2(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
                         @RequestParam("id") Long id,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -90,24 +92,9 @@ public class PostController {
         return "redirect:/post/{id}";
     }
 
-    @PostMapping("/edit/{id}")
-    public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
-                       @PathVariable("id") Long id, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            log.warn("errors = {}", bindingResult);
-            return "post/editForm";
-        }
-        HttpSession session = request.getSession(false);
-        Member member = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
-        postEditForm.setName(member.getName());
-        Date date = new Date();
-        postEditForm.setPostDate(date);
-        postMapper.updatePost(id, postEditForm);
-        return "redirect:/post/{id}";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deletePost(@PathVariable("id")Long id) {
+    @PostMapping("/delete")
+    @ApiOperation(value="게시글 삭제", notes="게시글 삭제")
+    public String deletePost(@RequestParam("id") Long id) {
         postMapper.deletePost(id);
         return "redirect:/post";
     }
