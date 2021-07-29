@@ -1,7 +1,7 @@
 package com.practice.board.controller;
 
 import com.practice.board.domain.member.Member;
-import com.practice.board.domain.member.form.SessionConst;
+import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostSaveForm;
 import com.practice.board.mapper.PostMapper;
@@ -58,14 +58,18 @@ public class PostController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@ModelAttribute("post") PostSaveForm postSaveForm, @PathVariable("id") Long id, Model model) {
+    public String editForm(@ModelAttribute("post") PostSaveForm postSaveForm, @PathVariable("id") Long id,
+                           Model model) {
         model.addAttribute("post", postMapper.getPost(id));
         return "post/editForm";
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@Validated @ModelAttribute("post") PostSaveForm postSaveForm,
-                       @PathVariable("id")Long id) {
+    public String edit(@Validated @ModelAttribute("post") PostSaveForm postSaveForm, BindingResult bindingResult,
+                       @PathVariable("id") Long id, HttpServletRequest request) {
+//        HttpSession session = request.getSession(false);
+//        Member member = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+//        Post post = postSaveFormToPost(postSaveForm, request);
         postMapper.updatePost(id, postSaveForm);
         return "redirect:/post/{id}";
     }

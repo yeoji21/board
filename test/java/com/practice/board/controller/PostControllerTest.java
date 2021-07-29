@@ -33,21 +33,21 @@ class PostControllerTest {
         log.warn("post={}", post.toString());
     }
 
-    @Test
-    void updateTest() {
-        PostSaveForm postSaveForm = new PostSaveForm("update Test", "ddddd");
-        postMapper.updatePost(5L, postSaveForm);
-        log.warn("===update===");
-        Post post = postMapper.getPost(5L);
-        log.warn("post={}", post.toString());
-    }
+//    @Test
+//    void updateTest() {
+//        PostSaveForm postSaveForm = new PostSaveForm("update Test", "ddddd");
+//        postMapper.updatePost(5L, postSaveForm);
+//        log.warn("===update===");
+//        Post post = postMapper.getPost(5L);
+//        log.warn("post={}", post.toString());
+//    }
 
-    @Test
-    void pageList() {
-        List<Post> posts = postMapper.postPage
-                (0, 5);
-        log.warn("posts = {}", posts);
-    }
+//    @Test
+//    void pageList() {
+//        List<Post> posts = postMapper.postPage
+//                (0, 5);
+//        log.warn("posts = {}", posts);
+//    }
 
     @Test
     void pageCount() {

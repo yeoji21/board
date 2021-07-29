@@ -18,10 +18,15 @@
     <br>
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-dark btn-lg" type="button"
+            <button class="w-100 btn btn-primary btn-lg" type="button"
                     th:onclick="|location.href='@{/post}'|" th:text="#{board}">
                 글 목록
-
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-dark btn-lg" type="button"
+                    th:onclick="|location.href='@{/members/myPage}'|" th:text="#{myPage}">
+                내 정보
             </button>
         </div>
         <div class="col">

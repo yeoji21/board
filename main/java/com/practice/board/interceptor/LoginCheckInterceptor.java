@@ -1,6 +1,6 @@
 package com.practice.board.interceptor;
 
-import com.practice.board.domain.member.form.SessionConst;
+import com.practice.board.domain.member.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 

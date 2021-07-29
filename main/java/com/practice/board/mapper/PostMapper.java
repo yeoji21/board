@@ -39,9 +39,9 @@ public interface PostMapper {
 
     //글 5개씩 가져오기
     //글 id 기준으로 최신글 5개 뽑아옴
-    @Select("select * from post order by id desc limit #{start},#{end}")
+    @Select("select * from post order by id desc limit #{start},5")
     @ResultMap("PostMapper")
-    List<Post> postPage(@Param("start") int start, @Param("end") int end);
+    List<Post> postPage(@Param("start") int start);
 
     //전체 글 수 조회
     @Select("select count(id) c from post")

@@ -1,6 +1,8 @@
 package com.practice.board.controller;
 
 import com.practice.board.domain.member.Member;
+import com.practice.board.domain.member.SessionConst;
+import com.practice.board.domain.member.form.MemberMyPageForm;
 import com.practice.board.domain.member.form.MemberSaveForm;
 import com.practice.board.domain.member.form.MemberUpdateForm;
 import com.practice.board.mapper.MemberMapper;
@@ -8,11 +10,13 @@ import com.practice.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/members")
@@ -38,24 +42,41 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/{id}")
-    @ResponseBody
-    public Member findMember(@PathVariable Long id) {
-        return memberMapper.findById(id);
+    @GetMapping("/myPage")
+    public String memberMyPage(@ModelAttribute("member") MemberMyPageForm memberMyPageForm, HttpServletRequest request,
+                               Model model){
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return "login/loginForm";
+        }
+        Member findMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        model.addAttribute("member", findMember);
+        return "member/myPage";
     }
 
-    @GetMapping
-    @ResponseBody
-    public List<Member> findAll() {
-        return memberMapper.findAll();
-    }
+    @PostMapping("/myPage")
+    public String myPageEdit(@Validated @ModelAttribute("member") MemberMyPageForm memberMyPageForm,
+                             BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "member/myPage";
+        }
 
-    @PostMapping("/{id}")
-    @ResponseBody
-    public Member updateMember(@PathVariable Long id, @ModelAttribute("model")MemberUpdateForm updateForm) {
-        Member member = MemberEditFormToMember(id, updateForm);
-        memberMapper.updateMember(id, member);
-        return member;
+        if (memberService.dupNameCheck(memberMyPageForm.getName())) {
+            bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
+            return "member/myPage";
+        }
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return "login/loginForm";
+        }
+        Member findMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        findMember.setName(memberMyPageForm.getName());
+        findMember.setDescription(memberMyPageForm.getDescription());
+        log.warn("findMember = {}", findMember.toString());
+        memberMapper.updateMember(findMember.getId(),findMember);
+        //비밀번호 변경은 보류
+        return "redirect:/members/myPage";
     }
 
 

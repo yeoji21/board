@@ -1,7 +1,7 @@
 package com.practice.board;
 
 import com.practice.board.domain.member.Member;
-import com.practice.board.domain.member.form.SessionConst;
+import com.practice.board.domain.member.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

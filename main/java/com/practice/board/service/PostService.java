@@ -23,7 +23,7 @@ public class PostService {
 
     public List<Post> getFivePost(int page) {
         int start = (page - 1)*5;
-        return postMapper.postPage(start, start + 5);
+        return postMapper.postPage(start);
     }
 
     public int totalPages() {
