@@ -57,4 +57,6 @@ class MemberServiceTest {
 //        assertThat(member.getPassword()).isEqualTo(tester.getPassword());
         assertThat(member.getPassword()).isNotEqualTo(passwordCheck);
     }
+
+
 }

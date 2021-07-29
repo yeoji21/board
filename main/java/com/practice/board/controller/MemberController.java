@@ -66,6 +66,8 @@ public class MemberController {
         Member findMember = getMemberFromSession(request);
         if(findMember == null) return "login/loginForm";
 
+        if(duplicateNameCheck(memberService,memberMyPageForm, bindingResult, findMember)) return "member/myPage";
+
         memberUpdateNameAndDescription(memberMyPageForm, findMember);
         memberUpdatePassword(memberMyPageForm, passwordCheck, findMember);
 
@@ -75,8 +77,18 @@ public class MemberController {
         return "redirect:/members/myPage";
     }
 
+    private boolean duplicateNameCheck(MemberService memberService, MemberMyPageForm memberMyPageForm, BindingResult bindingResult, Member findMember) {
+        boolean check = findMember.getName().equals(memberMyPageForm.getName());
+        boolean dupNameCheck = memberService.dupNameCheck(memberMyPageForm.getName());
+        if(!check && dupNameCheck){
+            bindingResult.rejectValue("name","dupNickname","중복 닉네임입니다.");
+        }
+        return !check && dupNameCheck;
+    }
+
     private void memberUpdatePassword(MemberMyPageForm memberMyPageForm, String passwordCheck, Member findMember) {
-        if (memberMyPageForm.getPassword() != null && memberMyPageForm.getPassword().equals(passwordCheck)) {
+        log.warn("why??? {}", memberMyPageForm.getPassword());
+        if (memberMyPageForm.getPassword().trim().length()>3 && memberMyPageForm.getPassword().equals(passwordCheck)) {
             findMember.setPassword(memberMyPageForm.getPassword());
         }
     }
@@ -87,15 +99,16 @@ public class MemberController {
     }
 
     private boolean myPageEditErrorCheck(BindingResult bindingResult, MemberService memberService, MemberMyPageForm memberMyPageForm, String passwordCheck) {
-        boolean nameCheck = memberService.dupNameCheck(memberMyPageForm.getName());
-        if (nameCheck) {
-            bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
-        }
+//        boolean nameCheck = memberService.dupNameCheck(memberMyPageForm.getName());
+//        if (nameCheck) {
+//            bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
+//        }
         boolean passwordChecking = passwordChecking(memberMyPageForm, passwordCheck);
         if(passwordChecking){
             bindingResult.rejectValue("password","passwordCheckError","비밀번호 재확인이 일치하지 않습니다.");
         }
-        return nameCheck || bindingResult.hasErrors() ||passwordChecking;
+//        return nameCheck || bindingResult.hasErrors() ||passwordChecking;
+        return bindingResult.hasErrors() || passwordChecking;
     }
 
     private boolean passwordChecking(MemberMyPageForm memberMyPageForm, String passwordCheck) {
