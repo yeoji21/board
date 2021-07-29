@@ -1,6 +1,9 @@
 package com.practice.board.service;
 
+import com.practice.board.domain.member.Member;
+import com.practice.board.domain.member.form.MemberMyPageForm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Slf4j
 class MemberServiceTest {
 
     @Autowired
@@ -39,7 +43,18 @@ class MemberServiceTest {
     }
 
     @Test
-    void deletePost() {
-
+    void passwordUpdate() {
+//        MemberMyPageForm tester = new MemberMyPageForm("tester", "1234", "");
+        MemberMyPageForm tester = new MemberMyPageForm();
+        Member member = new Member("id", "pppp", "name", "dede");
+        tester.setName("tester");
+//        tester.setPassword("1234");
+        log.info("tester.password = {}", tester.getPassword());
+        String passwordCheck = "1234";
+        if (tester.getPassword() != null && tester.getPassword().equals(passwordCheck)) {
+            member.setPassword(tester.getPassword());
+        }
+//        assertThat(member.getPassword()).isEqualTo(tester.getPassword());
+        assertThat(member.getPassword()).isNotEqualTo(passwordCheck);
     }
 }

@@ -32,6 +32,10 @@
                 <div class="field-error" th:errors="*{password}"></div>
             </div>
             <div>
+                <label th:text="#{myPage.check.password}">비밀번호 확인</label>
+                <input type="password" class="form-control" name="passwordCheck">
+            </div>
+            <div>
                 <label for="description" th:text="#{label.member.description}">자기소개</label>
                 <input type="text" id="description" th:field="*{description}" class="form-control">
             </div>

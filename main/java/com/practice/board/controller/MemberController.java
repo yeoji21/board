@@ -59,17 +59,26 @@ public class MemberController {
     @PostMapping("/myPage")
     @ApiOperation(value="마이 페이지 수정", notes="마이 페이지 정보에대해 수정한 것을 적용")
     public String myPageEdit(@Validated @ModelAttribute("member") MemberMyPageForm memberMyPageForm,
-                             BindingResult bindingResult, HttpServletRequest request) {
-        if (myPageEditErrorCheck(bindingResult, memberService, memberMyPageForm)) {
-            return "member/myPage";
-        }
+                             BindingResult bindingResult, HttpServletRequest request,
+                             @RequestParam("passwordCheck")String passwordCheck) {
+        if (myPageEditErrorCheck(bindingResult, memberService, memberMyPageForm, passwordCheck)) {
+            return "member/myPage"; }
         Member findMember = getMemberFromSession(request);
         if(findMember == null) return "login/loginForm";
 
         memberUpdateNameAndDescription(memberMyPageForm, findMember);
+        memberUpdatePassword(memberMyPageForm, passwordCheck, findMember);
+
         memberMapper.updateMember(findMember.getId(),findMember);
         //비밀번호 변경은 보류
+        log.warn("passwordCheck = {}", passwordCheck);
         return "redirect:/members/myPage";
+    }
+
+    private void memberUpdatePassword(MemberMyPageForm memberMyPageForm, String passwordCheck, Member findMember) {
+        if (memberMyPageForm.getPassword() != null && memberMyPageForm.getPassword().equals(passwordCheck)) {
+            findMember.setPassword(memberMyPageForm.getPassword());
+        }
     }
 
     private void memberUpdateNameAndDescription(MemberMyPageForm memberMyPageForm, Member findMember) {
@@ -77,12 +86,20 @@ public class MemberController {
         findMember.setDescription(memberMyPageForm.getDescription());
     }
 
-    private boolean myPageEditErrorCheck(BindingResult bindingResult, MemberService memberService, MemberMyPageForm memberMyPageForm) {
+    private boolean myPageEditErrorCheck(BindingResult bindingResult, MemberService memberService, MemberMyPageForm memberMyPageForm, String passwordCheck) {
         boolean nameCheck = memberService.dupNameCheck(memberMyPageForm.getName());
         if (nameCheck) {
             bindingResult.rejectValue("name", "duplicateName", "중복 닉네임입니다.");
         }
-        return nameCheck || bindingResult.hasErrors();
+        boolean passwordChecking = passwordChecking(memberMyPageForm, passwordCheck);
+        if(passwordChecking){
+            bindingResult.rejectValue("password","passwordCheckError","비밀번호 재확인이 일치하지 않습니다.");
+        }
+        return nameCheck || bindingResult.hasErrors() ||passwordChecking;
+    }
+
+    private boolean passwordChecking(MemberMyPageForm memberMyPageForm, String passwordCheck) {
+        return memberMyPageForm.getPassword()!=null && !memberMyPageForm.getPassword().equals(passwordCheck);
     }
 
     private Member memberSaveFormToMember(MemberSaveForm memberSaveForm) {

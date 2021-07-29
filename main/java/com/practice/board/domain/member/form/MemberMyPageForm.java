@@ -1,9 +1,6 @@
 package com.practice.board.domain.member.form;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,9 +9,11 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @ToString
+@NoArgsConstructor
 public class MemberMyPageForm {
     @NotBlank
     private String name;
     private String password;
     private String description;
+
 }
