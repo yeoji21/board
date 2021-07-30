@@ -77,6 +77,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value="멤버 페이지 접근", notes="다른 사용자의 멤버 페이지에 접근")
     public String memberPage(@PathVariable("id")Long id, Model model, HttpServletRequest request) {
         Member sessionMember = getMemberFromSession(request);
         if(sessionMember==null) return "login/loginForm";

@@ -1,11 +1,15 @@
 package com.practice.board.controller;
 
+import com.practice.board.domain.comment.Comment;
+import com.practice.board.domain.comment.form.CommentSaveForm;
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
+import com.practice.board.mapper.CommentMapper;
 import com.practice.board.mapper.PostMapper;
+import com.practice.board.service.CommentService;
 import com.practice.board.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -29,6 +34,7 @@ import java.util.Date;
 public class PostController {
     private final PostMapper postMapper;
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping
     @ApiOperation(value="게시판 화면 출력", notes="post의 id의 역순으로 게시물 5개씩 가져옴")
@@ -60,8 +66,10 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value="게시글 읽기", notes="게시글 id를 통해 게시물 하나를 읽어옴")
+    @ApiOperation(value = "게시글 읽기", notes = "게시글 id를 통해 게시물 하나를 읽어옴")
     public String readPost(@PathVariable Long id, Model model) {
+        List<CommentSaveForm> comments = commentService.namedCommentList(id);
+        model.addAttribute("comments", comments);
         model.addAttribute("post", postMapper.getPost(id));
         return "post/post";
     }

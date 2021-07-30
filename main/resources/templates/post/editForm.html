@@ -29,7 +29,7 @@
         <tr>
             <td class="title">제 목</td>
             <td>
-                <input th:field="*{title}" type="text" size="70" maxlength="100" th:errorclass="field-error">
+                <input th:field="*{title}" type="text" size="70" maxlength="100" th:errorclass="field-error" autocomplete="off">
                 <div class="field-error" th:errors="*{title}"></div>
             </td>
         </tr>
@@ -43,7 +43,8 @@
         <tr>
             <td class="title">내 용</td>
             <td>
-                <textarea th:field="*{content}" cols="72" rows="20" th:text="*{content}" th:errorclass="field-error"></textarea>
+                <textarea th:field="*{content}" cols="72" rows="20" th:text="*{content}"
+                          th:errorclass="field-error" autocomplete="off"></textarea>
                 <div class="field-error" th:errors="*{content}"></div>
                 <!--                <input th:field="*{content}" type="text">-->
             </td>

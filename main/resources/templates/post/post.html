@@ -62,27 +62,25 @@
         <div>
             <label th:text="${session.loginMember.name}" style="margin-left: 20px"></label>
         </div>
+        <input type="hidden" th:value="${post.id}" name="postId">
+        <input type="hidden" th:value="${session.loginMember.id}" name="memberId">
         <br>
         <div>
-            <input type="text" class="form-control" size="10">
+            <input type="text" class="form-control" size="10" name="comment" autocomplete="off">
         </div>
         <button type="submit" class="btn-group-sm btn btn-primary" style="float: right">등록</button>
     </form>
+    <div th:if="${#lists.isEmpty(comments)}">
+                <label class="text-center text-black-50">댓글이 없습니다.</label>
+    </div>
     <table class="table">
-            <td>xxxx</td>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.name}"></td>
             <br>
-            <td>>zzzzzzzzzzzzzzz</td>
-            <td>0000-00-00</td>
+            <td th:text="${comment.comment}"></td>
+            <td th:text="${{comment.date}}"></td>
+        </tr>
     </table>
-<!--    <table class="table" width="600px">-->
-<!--        <tr th:each="list : ${lists}">-->
-<!--            <td th:text="${list.id}"></td>-->
-<!--            <br>-->
-<!--            <td><a href="#" th:href="@{|/post/${list.id}|}" th:text="${list.title}"></a></td>-->
-<!--            <td><a th:href="@{/members/{id}(id=${list.memberId})}" th:text="${list.name}"></a></td>-->
-<!--            <td th:text="${{list.postDate}}"></td>-->
-<!--        </tr>-->
-<!--    </table>-->
 </div>
 </body>
 </html>
