@@ -1,8 +1,6 @@
 package com.practice.board.domain.comment;
 
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 @Getter

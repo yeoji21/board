@@ -23,6 +23,7 @@ public class CommentService {
         List<CommentSaveForm> namedCommentList = new ArrayList();
         for (Comment comment : commentList) {
             CommentSaveForm commentSaveForm = new CommentSaveForm();
+            commentSaveForm.setId(comment.getId());
             commentSaveForm.setName(memberMapper.findById(comment.getMemberId()).getName());
             commentSaveForm.setComment(comment.getComment());
             commentSaveForm.setDate(comment.getDate());

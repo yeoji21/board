@@ -35,4 +35,10 @@ public class CommentController {
         return "redirect:/post/{id}";
     }
 
+    @PostMapping("/delete")
+    public String deleteComment(@RequestParam("id") Long id, @RequestParam("postId")Long postId, RedirectAttributes redirectAttributes) {
+        commentMapper.deleteComment(id);
+        redirectAttributes.addAttribute("id",postId);
+        return "redirect:/post/{id}";
+    }
 }

@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class CommentSaveForm {
+    private Long id;
     private String name;
     private String comment;
     @DateTimeFormat(pattern = "yyyy-MM-dd [HH:mm]")

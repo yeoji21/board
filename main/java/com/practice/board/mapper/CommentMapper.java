@@ -28,4 +28,6 @@ public interface CommentMapper {
     List<Comment> getCommentByMemberAndPost(@Param("postId")Long postId, @Param("memberId")Long memberId);
 
 
+    @Delete("delete from comment where id=#{id}")
+    void deleteComment(@Param("id") Long id);
 }
