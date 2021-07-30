@@ -99,6 +99,7 @@ public class PostController {
     @ApiOperation(value="게시글 삭제", notes="게시글 삭제")
     public String deletePost(@RequestParam("id") Long id) {
         postMapper.deletePost(id);
+        //댓글이 있는 게시글 삭제 시 외래키때무에 발생하는 문제 해결해야 함
         return "redirect:/post";
     }
 
