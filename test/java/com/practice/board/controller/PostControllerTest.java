@@ -12,7 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,32 +25,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
+@WebMvcTest(PostController.class)
 class PostControllerTest {
     //    private final PostMapper postMapper;
     @Autowired
     private PostMapper postMapper;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     void test() {
         Post post = postMapper.getPost(5L);
         log.warn("post={}", post.toString());
     }
-
-//    @Test
-//    void updateTest() {
-//        PostSaveForm postSaveForm = new PostSaveForm("update Test", "ddddd");
-//        postMapper.updatePost(5L, postSaveForm);
-//        log.warn("===update===");
-//        Post post = postMapper.getPost(5L);
-//        log.warn("post={}", post.toString());
-//    }
-
-//    @Test
-//    void pageList() {
-//        List<Post> posts = postMapper.postPage
-//                (0, 5);
-//        log.warn("posts = {}", posts);
-//    }
 
     @Test
     void pageCount() {

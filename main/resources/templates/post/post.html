@@ -18,6 +18,13 @@
 <div class="py-5 text-center">
     <h2>보기</h2>
 </div>
+<th:block th:if="${post.memberId} eq ${session.loginMember.id}">
+    <form method="post" th:action="@{/post/delete}">
+        <input type="hidden" th:value="${post.id}" name="id"/>
+        <button type="submit" class="btn-group-sm btn btn-primary" style="float: right;">삭제</button>
+    </form>
+</th:block>
+<br>
 <form th:action="@{/post/editForm}" method="post" th:object="${post}">
     <input type="hidden" th:value="*{id}" name="id">
     <table width="700" border="3" align="center">
@@ -49,11 +56,33 @@
     </th:block>
     <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">목록으로</button>
 </form>
-<th:block th:if="${post.memberId} eq ${session.loginMember.id}">
-    <form method="post" th:action="@{/post/delete}">
-        <input type="hidden" th:value="${post.id}" name="id"/>
-        <button type="submit" class="btn-group-sm btn btn-primary">삭제</button>
+<br>
+<div>
+    <form th:action="@{/comment/addComment}" method="post">
+        <div>
+            <label th:text="${session.loginMember.name}" style="margin-left: 20px"></label>
+        </div>
+        <br>
+        <div>
+            <input type="text" class="form-control" size="10">
+        </div>
+        <button type="submit" class="btn-group-sm btn btn-primary" style="float: right">등록</button>
     </form>
-</th:block>
+    <table class="table">
+            <td>xxxx</td>
+            <br>
+            <td>>zzzzzzzzzzzzzzz</td>
+            <td>0000-00-00</td>
+    </table>
+<!--    <table class="table" width="600px">-->
+<!--        <tr th:each="list : ${lists}">-->
+<!--            <td th:text="${list.id}"></td>-->
+<!--            <br>-->
+<!--            <td><a href="#" th:href="@{|/post/${list.id}|}" th:text="${list.title}"></a></td>-->
+<!--            <td><a th:href="@{/members/{id}(id=${list.memberId})}" th:text="${list.name}"></a></td>-->
+<!--            <td th:text="${{list.postDate}}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+</div>
 </body>
 </html>
