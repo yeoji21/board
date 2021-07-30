@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>MyPage</title>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+<div class="text-center" style="max-width: 600px">
+    <h2>회원 정보</h2>
+</div>
+<br class="m-4">
+<div class="container">
+        <div>
+            <label for="name" th:text="#{label.member.name}">이름</label>
+            <label type="text" id="name" class="form-control" th:text="${member.name}"></label>
+        </div>
+        <div>
+            <label for="description" th:text="#{label.member.description}">자기소개</label>
+            <label type="text" id="description" class="form-control" th:text="${member.description}"></label>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg" th:onclick="|location.href='@{/}'|" type="button">
+                    돌아가기
+                </button>
+            </div>
+        </div>
+</div>
+</body>
+</html>

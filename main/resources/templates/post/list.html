@@ -29,7 +29,7 @@
 
                     <td th:text="${list.id}"></td>
                     <td><a href="#" th:href="@{|/post/${list.id}|}" th:text="${list.title}"></a></td>
-                    <td th:text="${list.name}"></td>
+                    <td><a th:href="@{/members/{id}(id=${list.memberId})}" th:text="${list.name}"></a></td>
                     <td th:text="${{list.postDate}}"></td>
                 </tr>
             </tbody>

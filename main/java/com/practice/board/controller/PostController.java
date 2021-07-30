@@ -25,7 +25,7 @@ import java.util.Date;
 @Slf4j
 @RequestMapping("/post")
 @RequiredArgsConstructor
-@Api(tags = "게시글 컨트롤러")
+@Api(tags = "게시글 API")
 public class PostController {
     private final PostMapper postMapper;
     private final PostService postService;
@@ -39,7 +39,7 @@ public class PostController {
     }
 
     @GetMapping("/add")
-    @ApiOperation(value="게시물ㄷ2 추가 화면으로 이동", notes="글 쓰기 화면으로 이동")
+    @ApiOperation(value="게시물 추가 화면으로 이동", notes="글 쓰기 화면으로 이동")
     public String addPost(@ModelAttribute("post") PostSaveForm postSaveForm) {
         return "post/addForm";
     }
@@ -68,14 +68,14 @@ public class PostController {
 
     @PostMapping("/editForm")
     @ApiOperation(value="게시글 수정 화면으로 이동", notes="게시글 수정 화면으로 이동")
-    public String editFormV2(@ModelAttribute("post") PostEditForm postEditForm, @RequestParam("id") Long id,Model model) {
+    public String editForm(@ModelAttribute("post") PostEditForm postEditForm, @RequestParam("id") Long id,Model model) {
         model.addAttribute("post", postMapper.getPost(id));
         return "post/editForm";
     }
 
     @PostMapping("/edit")
     @ApiOperation(value="게시글 수정 적용", notes="게시글 수정 화면에서 입력한 정보로 게시글을 수정")
-    public String editV2(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
+    public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
                         @RequestParam("id") Long id,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (postErrorCheck(bindingResult)) {
             log.warn("errors = {}", bindingResult);
