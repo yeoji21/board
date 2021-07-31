@@ -45,13 +45,12 @@ public class CommentController {
 
     @PostMapping("/update")
     @ResponseBody
-    public String updateComment(@RequestParam("content")String content, @RequestParam("cid")Long cid, Model model,
-                                @RequestParam("pid")Long pid) {
-        log.warn("callllllll");
-        log.warn("content = {}, cid={}", content, cid);
+    public String updateComment(@RequestParam("content")String content, @RequestParam("cid")Long cid, Model model){
+//        Comment comment = commentMapper.getCommentById(cid);
+//        comment.setComment(content);
+        commentMapper.updateComment(cid, content);
         Comment comment = commentMapper.getCommentById(cid);
-        comment.setComment(content);
-        model.addAttribute("comment", comment);
+//        model.addAttribute("comment", comment);
         log.warn("comment = {}", comment.toString());
         return content;
     }

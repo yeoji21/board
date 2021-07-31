@@ -19,9 +19,10 @@
             var container = document.getElementById("container-"+commentId);
             var addText = document.getElementById("addText-"+commentId);
             var textValue = container.innerText;
-            while (addText.hasChildNodes()) {
-                addText.removeChild(addText.lastChild);
-            }
+
+            // while (addText.hasChildNodes()) {
+            //     addText.removeChild(addText.lastChild);
+            // }
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);
             }
@@ -35,7 +36,7 @@
 
             var edit = document.createElement("button");
             edit.type = "button";
-            edit.innerText = "수정";
+            edit.innerText = "저장";
             edit.style.cssText = 'text-decoration: none; border: none;background: none;'
             addText.appendChild(edit);
             edit.onclick = function () {
@@ -45,12 +46,14 @@
 
         function update(commentId, textValue) {
             var content = $("#input").val();
+            var root = "#container-"+commentId;
             $.ajax({
                 url: '/comment/update',
                 type: 'post',
-                data: {'content': content, 'cid': commentId, 'pid':26},
+                data: {'content': content, 'cid': commentId},
             }).done(function (fragment) {
-                $("#container-27").replaceWith(fragment);
+                // $("#container-27").replaceWith(fragment);
+                $(root).text(fragment);
             });
         }
         }

@@ -40,4 +40,8 @@ public interface CommentMapper {
     @Delete("delete from comment where post_id=#{postId}")
     void deleteCommentByPostId(@Param("postId") Long postId);
 
+    //일단 날짜말고 내용만 바꿈
+    @Update("update comment set comment=#{comment} where id=#{id}")
+    void updateComment(@Param("id") Long id, @Param("comment")String commend);
+
 }
