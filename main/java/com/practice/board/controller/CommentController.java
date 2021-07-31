@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -36,9 +37,22 @@ public class CommentController {
     }
 
     @PostMapping("/delete")
-    public String deleteComment(@RequestParam("id") Long id, @RequestParam("postId")Long postId, RedirectAttributes redirectAttributes) {
+    public String deleteComment(@RequestParam("id") Long id, @RequestParam("postId") Long postId, RedirectAttributes redirectAttributes) {
         commentMapper.deleteComment(id);
-        redirectAttributes.addAttribute("id",postId);
+        redirectAttributes.addAttribute("id", postId);
         return "redirect:/post/{id}";
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public String updateComment(@RequestParam("content")String content, @RequestParam("cid")Long cid, Model model,
+                                @RequestParam("pid")Long pid) {
+        log.warn("callllllll");
+        log.warn("content = {}, cid={}", content, cid);
+        Comment comment = commentMapper.getCommentById(cid);
+        comment.setComment(content);
+        model.addAttribute("comment", comment);
+        log.warn("comment = {}", comment.toString());
+        return content;
     }
 }

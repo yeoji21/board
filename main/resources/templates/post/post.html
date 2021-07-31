@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <title>login</title>
     <style>
         .container{
@@ -13,6 +14,47 @@
             color:red;
         }
     </style>
+    <script type='text/javascript'>
+        function addFields(commentId){
+            var container = document.getElementById("container-"+commentId);
+            var addText = document.getElementById("addText-"+commentId);
+            var textValue = container.innerText;
+            while (addText.hasChildNodes()) {
+                addText.removeChild(addText.lastChild);
+            }
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "editComment";
+            input.style.cssText = 'width:500px;';
+            input.id = "input";
+            input.value = textValue;
+            container.appendChild(input);
+
+            var edit = document.createElement("button");
+            edit.type = "button";
+            edit.innerText = "수정";
+            edit.style.cssText = 'text-decoration: none; border: none;background: none;'
+            addText.appendChild(edit);
+            edit.onclick = function () {
+                update(commentId, textValue);
+                edit.remove();
+            };
+
+        function update(commentId, textValue) {
+            var content = $("#input").val();
+            $.ajax({
+                url: '/comment/update',
+                type: 'post',
+                data: {'content': content, 'cid': commentId, 'pid':26},
+            }).done(function (fragment) {
+                $("#container-27").replaceWith(fragment);
+            });
+        }
+        }
+    </script>
 </head>
 <body>
 <div class="py-5 text-center">
@@ -77,12 +119,12 @@
         <tr th:each="comment : ${comments}">
             <td style="width: 10%; font-weight:bold;" th:text="${comment.name}"></td>
             <br>
-            <td style="width: 50%;font-weight:600;" th:text="${comment.comment}" th:styleappend="${post.name== comment.name ? 'color:blue;' : ''}"></td>
-            <td style="width: 5%" th:if="${session.loginMember.name} eq ${comment.name}">
+            <td th:id="|container-${comment.id}|" style="width: 50%;font-weight:600;" th:text="${comment.comment}" th:value="${comment.comment}" th:styleappend="${post.name== comment.name ? 'color:blue;' : ''}"></td>
+            <td th:id="|addText-${comment.id}|" style="width: 5%" th:if="${session.loginMember.name} eq ${comment.name}">
                 <form method="post" th:action="@{/comment/delete}" class="flex-row">
                     <input type="hidden" th:value="${comment.id}" name="id">
                     <input type="hidden" th:value="${post.id}" name="postId">
-                    <button type="button" th:onclick="|location.href='@{/}'|" th:text="수정" style="color: gray; text-decoration: none; border: none;background: none;"></button>
+                    <button type="button" th:onclick="|addFields(${comment.id})|" th:text="수정" style="color: gray; text-decoration: none; border: none;background: none;"></button>
                     <button type="submit" th:text="삭제" style="color: gray; text-decoration: none; border: none;background: none;"></button>
                 </form>
             </td>
