@@ -67,4 +67,12 @@ class CommentMapperTest {
         assertThat(namedCommentList).hasSize(4);
     }
 
+    @Test
+    @Transactional
+    void deleteCommentByPostId() {
+        commentMapper.deleteCommentByPostId(21L);
+        List<Comment> comment = commentMapper.getComment(21L);
+        assertThat(comment.size()).isEqualTo(0);
+    }
+
 }

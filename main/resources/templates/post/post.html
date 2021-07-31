@@ -75,14 +75,14 @@
     </div>
     <table class="table">
         <tr th:each="comment : ${comments}">
-            <td style="width: 10%" th:text="${comment.name}"></td>
+            <td style="width: 10%; font-weight:bold;" th:text="${comment.name}"></td>
             <br>
-            <td style="width: 50%" th:text="${comment.comment}"></td>
+            <td style="width: 50%;font-weight:600;" th:text="${comment.comment}" th:styleappend="${post.name== comment.name ? 'color:blue;' : ''}"></td>
             <td style="width: 5%" th:if="${session.loginMember.name} eq ${comment.name}">
                 <form method="post" th:action="@{/comment/delete}" class="flex-row">
                     <input type="hidden" th:value="${comment.id}" name="id">
                     <input type="hidden" th:value="${post.id}" name="postId">
-                    <button th:href="|@{/}|" th:text="수정" style="color: gray; text-decoration: none; border: none;background: none;"></button>
+                    <button type="button" th:onclick="|location.href='@{/}'|" th:text="수정" style="color: gray; text-decoration: none; border: none;background: none;"></button>
                     <button type="submit" th:text="삭제" style="color: gray; text-decoration: none; border: none;background: none;"></button>
                 </form>
             </td>

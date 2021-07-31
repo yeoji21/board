@@ -2,6 +2,7 @@ package com.practice.board.controller;
 
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostSaveForm;
+import com.practice.board.mapper.CommentMapper;
 import com.practice.board.mapper.PostMapper;
 import com.practice.board.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@WebMvcTest(PostController.class)
 class PostControllerTest {
     //    private final PostMapper postMapper;
     @Autowired
     private PostMapper postMapper;
-
     @Autowired
-    private MockMvc mockMvc;
+    private CommentMapper commentMapper;
 
     @Test
     void test() {
@@ -53,17 +52,14 @@ class PostControllerTest {
         assertThat(test).isEqualTo(1);
     }
 
-
     @Test
-    void totalPages() {
-//        int count = postMapper.postCount();
-        int count = 5;
-        if (count % 5 == 0) {
-            count = count / 5;
-        }
-        else{
-            count = count/5 +1;
-        }
-        assertThat(count).isEqualTo(1);
+    @Transactional
+    void deletePosthaveComment() {
+        commentMapper.deleteCommentByPostId(21L);
+        postMapper.deletePost(21L);
+
+        Post post = postMapper.getPost(21L);
+        assertThat(post).isNull();
     }
+
 }

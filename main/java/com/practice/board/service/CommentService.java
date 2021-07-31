@@ -31,4 +31,13 @@ public class CommentService {
         }
         return namedCommentList;
     }
+
+    public void deleteCommentInPost(Long postId) {
+        List<Comment> commentList = commentMapper.getComment(postId);
+        if(commentList.size()<0){
+            return;
+        }
+        commentMapper.deleteCommentByPostId(postId);
+    }
+
 }

@@ -27,7 +27,12 @@ public interface CommentMapper {
     @ResultMap("CommentMap")
     List<Comment> getCommentByMemberAndPost(@Param("postId")Long postId, @Param("memberId")Long memberId);
 
-
+    //선택한 댓글 하나 삭제
     @Delete("delete from comment where id=#{id}")
     void deleteComment(@Param("id") Long id);
+
+    //해당 게시물의 모든 댓글 삭제
+    @Delete("delete from comment where post_id=#{postId}")
+    void deleteCommentByPostId(@Param("postId") Long postId);
+
 }
