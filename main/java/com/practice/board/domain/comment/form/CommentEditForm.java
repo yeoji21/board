@@ -5,16 +5,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CommentSaveForm {
-    private Long
-            id;
-    private String name;
+public class CommentEditForm {
+    private Long cid;
     private String comment;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd [HH:mm]")
     private Date date;
 }

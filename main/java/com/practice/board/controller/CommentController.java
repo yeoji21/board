@@ -2,6 +2,7 @@ package com.practice.board.controller;
 
 
 import com.practice.board.domain.comment.Comment;
+import com.practice.board.domain.comment.form.CommentEditForm;
 import com.practice.board.mapper.CommentMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,11 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
 
 @Slf4j
 @Controller
@@ -45,13 +45,16 @@ public class CommentController {
 
     @PostMapping("/update")
     @ResponseBody
-    public String updateComment(@RequestParam("content")String content, @RequestParam("cid")Long cid, Model model){
-//        Comment comment = commentMapper.getCommentById(cid);
-//        comment.setComment(content);
-        commentMapper.updateComment(cid, content);
-        Comment comment = commentMapper.getCommentById(cid);
-//        model.addAttribute("comment", comment);
+    public Comment updateComment(@RequestParam("cid")Long cid, @RequestParam("content")String content){
+//        log.warn("date = {}", date);
+        CommentEditForm commentEditForm = new CommentEditForm();
+        commentEditForm.setCid(cid);
+        commentEditForm.setComment(content);
+        commentEditForm.setDate(new Date());
+        commentMapper.updateCommentAndDate(commentEditForm);
+        Comment comment = commentMapper.getCommentById(commentEditForm.getCid());
         log.warn("comment = {}", comment.toString());
-        return content;
+//        return content;
+        return comment;
     }
 }

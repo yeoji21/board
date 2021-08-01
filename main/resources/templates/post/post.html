@@ -88,7 +88,7 @@
                     <button type="submit" th:text="삭제" style="color: gray; text-decoration: none; border: none;background: none;"></button>
                 </form>
             </td>
-            <td style="width: 10%" th:text="${{comment.date}}"></td>
+            <td style="width: 10%" th:text="${{comment.date}}" th:id="|tdDate-${comment.id}|"></td>
         </tr>
     </table>
 </div>

@@ -1,6 +1,7 @@
 package com.practice.board.mapper;
 
 import com.practice.board.domain.comment.Comment;
+import com.practice.board.domain.comment.form.CommentEditForm;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -44,4 +45,7 @@ public interface CommentMapper {
     @Update("update comment set comment=#{comment} where id=#{id}")
     void updateComment(@Param("id") Long id, @Param("comment")String commend);
 
+
+    @Update("update comment set comment=#{comment.comment}, date=#{comment.date} where id=#{comment.cid}")
+    void updateCommentAndDate(@Param("comment")CommentEditForm comment);
 }

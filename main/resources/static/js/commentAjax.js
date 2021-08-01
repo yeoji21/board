@@ -56,13 +56,17 @@ function addFields(commentId){
     function update(commentId) {
         var content = $("#input").val();
         var root = "#container-"+commentId;
+        var dateRoot = "#tdDate-"+commentId;
+        // var date = new Date();
         $.ajax({
             url: '/comment/update',
             type: 'post',
+            dataType: "json",
             data: {'content': content, 'cid': commentId},
-        }).done(function (fragment) {
+        }).done(function (comment) {
             // $("#container-27").replaceWith(fragment);
-            $(root).text(fragment);
+            $(root).text(comment.comment);
+            // $(dateRoot).text(comment.date);
         });
     }
 }
