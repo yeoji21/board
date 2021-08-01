@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/commentAjax.js}"></script>
     <title>login</title>
     <style>
         .container{
@@ -14,50 +15,6 @@
             color:red;
         }
     </style>
-    <script type='text/javascript'>
-        function addFields(commentId){
-            var container = document.getElementById("container-"+commentId);
-            var addText = document.getElementById("addText-"+commentId);
-            var textValue = container.innerText;
-
-            // while (addText.hasChildNodes()) {
-            //     addText.removeChild(addText.lastChild);
-            // }
-            while (container.hasChildNodes()) {
-                container.removeChild(container.lastChild);
-            }
-            var input = document.createElement("input");
-            input.type = "text";
-            input.name = "editComment";
-            input.style.cssText = 'width:500px;';
-            input.id = "input";
-            input.value = textValue;
-            container.appendChild(input);
-
-            var edit = document.createElement("button");
-            edit.type = "button";
-            edit.innerText = "저장";
-            edit.style.cssText = 'text-decoration: none; border: none;background: none;'
-            addText.appendChild(edit);
-            edit.onclick = function () {
-                update(commentId, textValue);
-                edit.remove();
-            };
-
-        function update(commentId, textValue) {
-            var content = $("#input").val();
-            var root = "#container-"+commentId;
-            $.ajax({
-                url: '/comment/update',
-                type: 'post',
-                data: {'content': content, 'cid': commentId},
-            }).done(function (fragment) {
-                // $("#container-27").replaceWith(fragment);
-                $(root).text(fragment);
-            });
-        }
-        }
-    </script>
 </head>
 <body>
 <div class="py-5 text-center">
