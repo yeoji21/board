@@ -70,3 +70,16 @@ function addFields(commentId){
         });
     }
 }
+
+function reply(commentId){
+    var container = document.getElementById("additional-" + commentId);
+    container.style.cssText = "display:absolute";
+    // var input = document.createElement("input");
+    // input.type = "text";
+    // input.name = "editComment";
+    // input.style.cssText = 'width:500px;';
+    // input.id = "reply-input";
+    // input.autocomplete = "off";
+    // container.appendChild(input);
+}
+

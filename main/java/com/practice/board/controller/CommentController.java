@@ -32,6 +32,7 @@ public class CommentController {
         newComment.setMemberId(memberId);
         newComment.setComment(comment);
         commentMapper.saveComment(newComment);
+        
         redirectAttributes.addAttribute("id", newComment.getPostId());
         return "redirect:/post/{id}";
     }
