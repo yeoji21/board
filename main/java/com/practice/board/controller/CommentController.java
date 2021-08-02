@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,7 +31,7 @@ public class CommentController {
         newComment.setMemberId(memberId);
         newComment.setComment(comment);
         commentMapper.saveComment(newComment);
-        
+
         redirectAttributes.addAttribute("id", newComment.getPostId());
         return "redirect:/post/{id}";
     }

@@ -1,34 +1,20 @@
 package com.practice.board.service;
 
 import com.practice.board.domain.member.Member;
-import com.practice.board.mapper.MemberMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class MemberService {
-    private final MemberMapper memberMapper;
+import java.util.List;
 
-    public boolean loginCheck(String loginId, String password) {
-        return memberPasswordCheck(memberMapper.findByLoginID(loginId), password);
-    }
-
-    public boolean dupIdCheck(String loginId) {
-        return memberIsNotNull(memberMapper.findByLoginID(loginId));
-    }
-
-    public boolean dupNameCheck(String name) {
-        return memberIsNotNull(memberMapper.findByName(name));
-    }
-
-    private boolean memberIsNotNull(Member member) {
-        return member != null;
-    }
-
-    private boolean memberPasswordCheck(Member member, String password) {
-        return member != null && member.getPassword().equals(password);
-    }
+public interface MemberService {
+    void save(Member member);
+    void update(Long id, Member member);
+    Member findById(Long id);
+    List<Member> findAll();
+    Member findByLoginID(String id);
+    Member findByName(String name);
+    boolean dupIdCheck(String loginId);
+    public boolean dupNameCheck(String name);
+    boolean passwordCheck(String loginId, String password);
 }

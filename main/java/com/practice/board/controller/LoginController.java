@@ -4,7 +4,7 @@ import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.form.LoginForm;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.mapper.MemberMapper;
-import com.practice.board.service.MemberService;
+import com.practice.board.service.impl.LegacyMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 @Api(tags="로그인 API")
 public class LoginController {
     private final MemberMapper memberMapper;
-    private final MemberService memberService;
+    private final LegacyMemberService memberService;
 
     @GetMapping
     @ApiOperation(value="로그인 화면으로 이동", notes="로그인 화면으로 이동")
@@ -56,7 +56,7 @@ public class LoginController {
         session.setAttribute(SessionConst.LOGIN_MEMBER, findMember);
     }
 
-    private boolean loginErrorCheck(LoginForm loginForm, MemberService memberService, BindingResult bindingResult) {
+    private boolean loginErrorCheck(LoginForm loginForm, LegacyMemberService memberService, BindingResult bindingResult) {
         boolean check = memberService.loginCheck(loginForm.getLoginId(), loginForm.getPassword());
         if (!check) {
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");

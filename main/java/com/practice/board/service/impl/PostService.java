@@ -1,4 +1,4 @@
-package com.practice.board.service;
+package com.practice.board.service.impl;
 
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.post.Post;

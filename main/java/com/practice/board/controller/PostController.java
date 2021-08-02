@@ -1,16 +1,14 @@
 package com.practice.board.controller;
 
-import com.practice.board.domain.comment.Comment;
 import com.practice.board.domain.comment.form.CommentSaveForm;
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
-import com.practice.board.mapper.CommentMapper;
 import com.practice.board.mapper.PostMapper;
-import com.practice.board.service.CommentService;
-import com.practice.board.service.PostService;
+import com.practice.board.service.impl.CommentService;
+import com.practice.board.service.impl.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +56,6 @@ public class PostController {
             log.warn("errors={}", bindingResult);
             return "post/addForm";
         }
-
         Post post = postSaveFormToPost(postSaveForm, request);
         postMapper.savePost(post);
         redirectAttributes.addAttribute("id", post.getId());

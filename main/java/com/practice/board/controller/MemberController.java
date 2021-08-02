@@ -27,7 +27,6 @@ import javax.servlet.http.HttpSession;
 @Api(tags="사용자 API")
 public class MemberController {
 
-    private final MemberMapper memberMapper;
     private final MemberService memberService;
 
     @GetMapping("/add")
@@ -43,7 +42,7 @@ public class MemberController {
             log.warn("errors = {}", bindingResult);
             return "member/addForm";
         }
-        memberMapper.saveMember(memberSaveFormToMember(memberSaveForm));
+        memberService.save(memberSaveFormToMember(memberSaveForm));
         return "redirect:/";
     }
 
@@ -72,7 +71,7 @@ public class MemberController {
         memberUpdateNameAndDescription(memberMyPageForm, findMember);
         memberUpdatePassword(memberMyPageForm, passwordCheck, findMember);
 
-        memberMapper.updateMember(findMember.getId(),findMember);
+        memberService.update(findMember.getId(),findMember);
         return "redirect:/members/myPage";
     }
 
@@ -82,16 +81,14 @@ public class MemberController {
         Member sessionMember = getMemberFromSession(request);
         if(sessionMember==null) return "login/loginForm";
 
-        Member member = memberMapper.findById(id);
+        Member member = memberService.findById(id);
         if (sessionMember.getId() == member.getId()) {
             model.addAttribute("member", member);
             return "member/myPage";
         }
-        MemberPageForm memberPageForm = new MemberPageForm(member.getName(), member.getDescription());
         model.addAttribute("member", member);
         return "member/memberPage";
     }
-
 
     private boolean duplicateNameCheck(MemberService memberService, MemberMyPageForm memberMyPageForm, BindingResult bindingResult, Member findMember) {
         boolean check = findMember.getName().equals(memberMyPageForm.getName());
