@@ -1,6 +1,7 @@
 package com.practice.board.service.impl;
 
 import com.practice.board.domain.member.Member;
+import com.practice.board.domain.post.Post;
 import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +60,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean passwordCheck(String loginId, String password) {
         return memberMapper.findByLoginID(loginId).getPassword().equals(password);
+    }
+
+    public void setName(Post post, Long id) {
+        post.setName(memberMapper.findById(id).getName());
     }
 }

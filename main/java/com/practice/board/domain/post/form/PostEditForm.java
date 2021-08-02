@@ -15,6 +15,7 @@ import java.util.Date;
 public class PostEditForm {
 //    @NotBlank
     private String name;
+
     @NotBlank
     private String title;
     @NotNull

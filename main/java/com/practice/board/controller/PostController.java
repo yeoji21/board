@@ -6,9 +6,9 @@ import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
-import com.practice.board.mapper.PostMapper;
+import com.practice.board.service.MemberService;
+import com.practice.board.service.PostService;
 import com.practice.board.service.impl.CommentService;
-import com.practice.board.service.impl.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +30,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Api(tags = "게시글 API")
 public class PostController {
-    private final PostMapper postMapper;
     private final PostService postService;
     private final CommentService commentService;
+    private final MemberService memberService;
 
     @GetMapping
     @ApiOperation(value="게시판 화면 출력", notes="post의 id의 역순으로 게시물 5개씩 가져옴")
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
-        model.addAttribute("lists", postService.getFivePost(page));
-        model.addAttribute("pages", postService.totalPages());
+        model.addAttribute("lists", postService.getFivePosts(page));
+        model.addAttribute("pages", postService.pages());
         return "post/list";
     }
 
@@ -57,7 +57,7 @@ public class PostController {
             return "post/addForm";
         }
         Post post = postSaveFormToPost(postSaveForm, request);
-        postMapper.savePost(post);
+        postService.save(post);
         redirectAttributes.addAttribute("id", post.getId());
         return "redirect:/post/{id}";
     }
@@ -67,14 +67,14 @@ public class PostController {
     public String readPost(@PathVariable Long id, Model model) {
         List<CommentSaveForm> comments = commentService.namedCommentList(id);
         model.addAttribute("comments", comments);
-        model.addAttribute("post", postMapper.getPost(id));
+        model.addAttribute("post", postService.get(id));
         return "post/post";
     }
 
     @PostMapping("/editForm")
     @ApiOperation(value="게시글 수정 화면으로 이동", notes="게시글 수정 화면으로 이동")
     public String editForm(@ModelAttribute("post") PostEditForm postEditForm, @RequestParam("id") Long id,Model model) {
-        model.addAttribute("post", postMapper.getPost(id));
+        model.addAttribute("post", postService.get(id));
         return "post/editForm";
     }
 
@@ -82,12 +82,12 @@ public class PostController {
     @ApiOperation(value="게시글 수정 적용", notes="게시글 수정 화면에서 입력한 정보로 게시글을 수정")
     public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
                         @RequestParam("id") Long id,HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if (postErrorCheck(bindingResult)) {
+        if (bindingResult.hasErrors()) {
             log.warn("errors = {}", bindingResult);
-            return "post/editForm";
+            return "/post/editForm";
         }
         postEditFormSetProperties(postEditForm, request);
-        postMapper.updatePost(id, postEditForm);
+        postService.update(id, postEditForm);
         redirectAttributes.addAttribute("id", id);
         return "redirect:/post/{id}";
     }
@@ -96,15 +96,14 @@ public class PostController {
     @ApiOperation(value="게시글 삭제", notes="게시글 삭제")
     public String deletePost(@RequestParam("id") Long id) {
         commentService.deleteCommentInPost(id);
-        postMapper.deletePost(id);
-        //댓글이 있는 게시글 삭제 시 외래키때무에 발생하는 문제 해결해야 함
+        postService.delete(id);
         return "redirect:/post";
     }
 
     private Post postSaveFormToPost(PostSaveForm postSaveForm, HttpServletRequest request) {
         Post post = new Post();
         setPostMemberId(post, request.getSession(false));
-        postService.setName(post, post.getMemberId());
+        memberService.setName(post, post.getMemberId());
         post.setTitle(postSaveForm.getTitle());
         post.setContent(postSaveForm.getContent());
         return post;

@@ -1,6 +1,7 @@
 package com.practice.board.service;
 
 import com.practice.board.domain.member.Member;
+import com.practice.board.domain.post.Post;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
@@ -17,4 +18,5 @@ public interface MemberService {
     boolean dupIdCheck(String loginId);
     public boolean dupNameCheck(String name);
     boolean passwordCheck(String loginId, String password);
+    void setName(Post post, Long id);
 }

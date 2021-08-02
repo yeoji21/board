@@ -2,6 +2,7 @@ package com.practice.board.domain.post.form;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostSaveForm {
-    @NotNull
+    @NotBlank
     private String title;
     @NotNull
     private String content;

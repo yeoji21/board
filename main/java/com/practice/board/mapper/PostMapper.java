@@ -2,7 +2,6 @@ package com.practice.board.mapper;
 
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostEditForm;
-import com.practice.board.domain.post.form.PostSaveForm;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public interface PostMapper {
 
     //글 삭제
     @Delete("delete from post where id=#{id}")
-    int deletePost(@Param("id") Long id);
+    void deletePost(@Param("id") Long id);
 
 
     @Update("update post set name=#{post.name},title=#{post.title},content=#{post.content},post_date=#{post.postDate} where id=#{id}")

@@ -23,7 +23,9 @@
         <tr>
             <td class="title">제 목</td>
             <td>
-                <input th:field="*{title}" type="text" size="70" maxlength="100" autocomplete="off">
+                <input th:field="*{title}" type="text" size="70" maxlength="100" autocomplete="off"
+                th:errorclass="field-error">
+                <div class="field-error" th:errors="*{title}"></div>
             </td>
         </tr>
         <tr>
