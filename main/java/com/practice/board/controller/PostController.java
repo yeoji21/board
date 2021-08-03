@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +29,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 @Api(tags = "게시글 API")
 public class PostController {
@@ -62,7 +63,7 @@ public class PostController {
         Post post = postSaveFormToPost(postSaveForm, request);
         postService.save(post);
         redirectAttributes.addAttribute("id", post.getId());
-        return "redirect:/post/{id}";
+        return "redirect:/posts/{id}";
     }
 
     @GetMapping("/{id}")
@@ -81,27 +82,29 @@ public class PostController {
         return "post/editForm";
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/{id}")
+    @Transactional
     @ApiOperation(value="게시글 수정 적용", notes="게시글 수정 화면에서 입력한 정보로 게시글을 수정")
     public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
-                        @RequestParam("id") Long id,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.warn("errors = {}", bindingResult);
             return "/post/editForm";
         }
         postEditFormSetProperties(postEditForm, request);
-        log.warn("update post id = {}", id);
-        postService.update(id, postEditForm);
-        redirectAttributes.addAttribute("id", id);
-        return "redirect:/post/{id}";
+        log.warn("update post id = {}", postEditForm.getId());
+        postService.update(postEditForm.getId(), postEditForm);
+        redirectAttributes.addAttribute("id", postEditForm.getId());
+        return "redirect:/posts/{id}";
     }
 
-    @PostMapping("/delete")
-    @ApiOperation(value="게시글 삭제", notes="게시글 삭제")
+    @DeleteMapping("/{id}")
+    @Transactional
+    @ApiOperation(value = "게시글 삭제", notes = "게시글 삭제")
     public String deletePost(@RequestParam("id") Long id) {
         commentService.deleteByPostId(id);
         postService.delete(id);
-        return "redirect:/post";
+        return "redirect:/posts";
     }
 
     private Post postSaveFormToPost(PostSaveForm postSaveForm, HttpServletRequest request) {

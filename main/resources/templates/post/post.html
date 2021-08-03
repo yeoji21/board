@@ -21,13 +21,13 @@
     <h2>보기</h2>
 </div>
 <th:block th:if="${post.memberId} eq ${session.loginMember.id}">
-    <form method="post" th:action="@{/post/delete}">
+    <form th:method="delete" th:action="@{|/posts/${post.id}|}">
         <input type="hidden" th:value="${post.id}" name="id"/>
         <button type="submit" class="btn-group-sm btn btn-primary" style="float: right;">삭제</button>
     </form>
 </th:block>
 <br>
-<form th:action="@{/post/editForm}" method="post" th:object="${post}">
+<form th:action="@{/posts/editForm}" method="post" th:object="${post}">
     <input type="hidden" th:value="*{id}" name="id">
     <table width="700" border="3" align="center">
         <tr>
@@ -56,7 +56,7 @@
     <th:block th:if="${post.memberId} eq ${session.loginMember.id}">
         <button type="submit" class="btn-group-sm btn btn-primary">수정</button>
     </th:block>
-    <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">목록으로</button>
+    <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/posts}'|">목록으로</button>
 </form>
 <br>
 <div>

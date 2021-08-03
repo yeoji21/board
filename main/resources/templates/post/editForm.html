@@ -18,7 +18,7 @@
 <div class="py-5 text-center">
     <h2>글 쓰기</h2>
 </div>
-<form th:action="@{/post/edit}" method="post" th:object="${post}">
+<form th:action="@{|/posts/${post.id}|}" th:method="put" th:object="${post}">
     <input type="hidden" th:value="*{id}" name="id">
 
     <div th:if="${#fields.hasGlobalErrors()}">
@@ -52,7 +52,7 @@
         </tr>
     </table>
     <button type="submit" class="btn-group-sm btn btn-primary">등록</button>
-    <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/post}'|">취소</button>
+    <button type="button" class="btn-group-sm btn btn-primary" th:onclick="|location.href='@{/posts/{id}(id=${post.id})}'|">취소</button>
 </form>
 
 </body>

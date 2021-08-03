@@ -27,7 +27,7 @@
             <tbody>
                 <tr th:each="list : ${lists}">
                     <td th:text="${list.id}"></td>
-                    <td><a href="#" th:href="@{|/post/${list.id}|}" th:text="${list.title}" style="color: inherit; text-decoration: none;"></a></td>
+                    <td><a href="#" th:href="@{|/posts/${list.id}|}" th:text="${list.title}" style="color: inherit; text-decoration: none;"></a></td>
                     <td><a th:href="@{/members/{id}(id=${list.memberId})}" th:text="${list.name}" style="color: inherit; text-decoration: none;"></a></td>
                     <td th:text="${{list.postDate}}"></td>
                 </tr>
@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col">
             <button class="btn-group-sm btn btn-primary fa-align-right" type="button"
-                    th:onclick="|location.href='@{/post/add}'|">글 쓰기</button>
+                    th:onclick="|location.href='@{/posts/add}'|">글 쓰기</button>
         </div>
         <div class="col">
             <button class="btn-group-sm btn btn-primary" type="button"
@@ -45,7 +45,7 @@
         </div>
     </div>
     <ul th:each="page: ${#numbers.sequence(1,pages)}" style="list-style: none; float: left">
-        <li><a th:text="${page}" th:href="@{|/post?page=${page}|}"></a></li>
+        <li><a th:text="${page}" th:href="@{|/posts?page=${page}|}"></a></li>
     </ul>
 </body>
 
