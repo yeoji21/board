@@ -3,15 +3,14 @@ package com.practice.board.controller;
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.member.form.MemberMyPageForm;
-import com.practice.board.domain.member.form.MemberPageForm;
 import com.practice.board.domain.member.form.MemberSaveForm;
-import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -29,13 +28,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/add")
+    @GetMapping()
     @ApiOperation(value="회원가입 화면으로 이동", notes="회원가입 화면으로 이동")
     public String addMemberForm(@ModelAttribute("member")MemberSaveForm member) {
         return "member/addForm";
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ApiOperation(value="회원가입 처리", notes="사용자의 입력을 검사하고 회원가입 정보를 db에 저장")
     public String addMember(@Validated @ModelAttribute("member") MemberSaveForm memberSaveForm, BindingResult bindingResult) {
         if (bindingErrorCheck(memberSaveForm, memberService, bindingResult)) {
@@ -56,7 +55,8 @@ public class MemberController {
         return "member/myPage";
     }
 
-    @PostMapping("/myPage")
+    @PutMapping("/myPage")
+    @Transactional
     @ApiOperation(value="마이 페이지 수정", notes="마이 페이지 정보에대해 수정한 것을 적용")
     public String myPageEdit(@Validated @ModelAttribute("member") MemberMyPageForm memberMyPageForm,
                              BindingResult bindingResult, HttpServletRequest request,

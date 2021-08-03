@@ -20,7 +20,7 @@
     </div>
     <br class="m-4">
     <div class="container">
-        <form th:action th:object="${member}" method="post">
+        <form th:action th:object="${member}" th:method="put">
             <div>
                 <label for="name" th:text="#{label.member.name}">이름</label>
                 <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="field-error">

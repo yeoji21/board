@@ -32,6 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Api(tags = "게시글 API")
 public class PostController {
+
     private final PostService postService;
     private final CommentService commentService;
     private final MemberService memberService;
