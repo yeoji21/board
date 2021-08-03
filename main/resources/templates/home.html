@@ -1,32 +1,130 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html th:replace="~{layout/notLoginBase :: layout(~{::title},~{::section})}" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>Home</title>
 </head>
 <body>
-<div class="container" style="max-width: 600px">
-    <div class="py-5 text-center">
-        <h2>홈 화면</h2>
-    </div>
-    <div class="row">
-        <div class="col">
-            <form th:method="get" th:action="@{/members}">
-                <button class="w-100 btn btn-secondary btn-lg" type="submit" th:text="#{join}"></button>
-            </form>
-        </div>
-        <div class="col">
-            <button class="w-100 btn btn-dark btn-lg"
-                    th:onclick="|location.href='@{/login}'|" type="button" th:text="#{login}">
-            </button>
-        </div>
-    </div>
-    <hr class="my-4">
-</div> <!-- /container -->
 
-<form th:action="@{/homeDelete}" th:method="delete">
-    <button class="btn btn-black btn-lg" type="submit">delete</button>
-</form>
+<!-- Showcase -->
+<section>
+    <section class="bg-dark text-white p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
+        <div class="container">
+            <div class="d-sm-flex align-items-center justify-content-between">
+                <div>
+                    <h1>Become a <span class="text-info">
+                            Cityzem
+                        </span></h1>
+                    <p class="lead my-4">
+                        We focus on teaching our students the fundamentals of the latest
+                        and greatest technologies to prepare them for their first dev role
+                    </p>
+                    <div class="d-flex">
+                        <form th:method="get" th:action="@{/members}">
+                            <button class="btn btn-info btn-lg px-5 mx-3" type="submit" th:text="#{join}"></button>
+                        </form>
+                        <button class="btn btn-info btn-lg px-5"
+                                th:onclick="|location.href='@{/login}'|" type="button" th:text="#{login}">
+                        </button>
+                    </div>
+                </div>
+                <img class="img-fluid w-50 d-none d-sm-block" src="/img/city.png" th:src="@{/img/city.png}" alt="">
+            </div>
+        </div>
+    </section>
+
+    <!-- Boxes -->
+    <section class="p-5">
+        <div class="containter">
+            <div class="row text-center g-4">
+                <div class="col-md">
+                    <div class="card bg-dark text-light">
+                        <div class="card-body text-center">
+                            <div class="h1 mb-3">
+                                <i class="bi bi-laptop"></i>
+                            </div>
+                            <h3 class="card-title mb-3">Virtual</h3>
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla in perspiciatis alias, nesciunt autem repellendus.
+                            </p>
+                            <a href="#" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="card bg-secondary text-light">
+                        <div class="card-body text-center">
+                            <div class="h1 mb-3">
+                                <i class="bi bi-person-square"></i>
+                            </div>
+                            <h3 class="card-title mb-3">Hybrid</h3>
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla in perspiciatis alias, nesciunt autem repellendus.
+                            </p>
+                            <a href="#" class="btn btn-dark">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="card bg-dark text-light">
+                        <div class="card-body text-center">
+                            <div class="h1 mb-3">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <h3 class="card-title mb-3">In Person</h3>
+                            <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla in perspiciatis alias, nesciunt autem repellendus.
+                            </p>
+                            <a href="#" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="learn" class="p-5">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-md text-center">
+                    <img src="/img/logo1.png" class="img-fluid w-50" alt="">
+                </div>
+                <div class="col-md p-5">
+                    <h2>Our City</h2>
+                    <p class="lead">
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis similique sit quam nostrum laudantium consequatur.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat hic cumque, aperiam exercitationem dignissimos est quos consequuntur illo similique delectus omnis perferendis, mollitia sint qui. Iusto provident et architecto aspernatur accusantium similique unde laborum. Corrupti provident eius dicta rerum accusantium.
+                    </p>
+                    <a href="#" class="btn btn-light-mt-3">
+                        <i class="bi bi-chevron-right"></i> Read More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="p-5 bg-dark">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-md p-5 text-light">
+                    <h2>New Away Kit</h2>
+                    <p class="lead">
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis similique sit quam nostrum laudantium consequatur.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat hic cumque, aperiam exercitationem dignissimos est quos consequuntur illo similique delectus omnis perferendis, mollitia sint qui. Iusto provident et architecto aspernatur accusantium similique unde laborum. Corrupti provident eius dicta rerum accusantium.
+                    </p>
+                    <a href="#" class="btn btn-light-mt-3">
+                        <i class="bi bi-chevron-right"></i> Read More
+                    </a>
+                </div>
+                <div class="col-md text-center">
+                    <img src="/img/logo2.png" class="img-fluid w-75" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
 </body>
 </html>
