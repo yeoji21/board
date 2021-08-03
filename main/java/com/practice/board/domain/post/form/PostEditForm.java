@@ -13,7 +13,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostEditForm {
-//    @NotBlank
+
+    private Long id;
+
     private String name;
 
     @NotBlank
@@ -22,6 +24,5 @@ public class PostEditForm {
     private String content;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd [HH:mm]")
-//    @NotNull
     private Date postDate;
 }

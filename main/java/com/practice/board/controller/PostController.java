@@ -1,14 +1,15 @@
 package com.practice.board.controller;
 
+import com.practice.board.domain.comment.Comment;
 import com.practice.board.domain.comment.form.CommentSaveForm;
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.SessionConst;
 import com.practice.board.domain.post.Post;
 import com.practice.board.domain.post.form.PostEditForm;
 import com.practice.board.domain.post.form.PostSaveForm;
+import com.practice.board.service.CommentService;
 import com.practice.board.service.MemberService;
 import com.practice.board.service.PostService;
-import com.practice.board.service.impl.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class PostController {
     @ApiOperation(value="게시물 저장", notes="글 쓰기를 화면에 입력한 정보를 검토하고 db에 저장함")
     public String savePost(@Validated @ModelAttribute("post") PostSaveForm postSaveForm, BindingResult bindingResult,
                            HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        if (postErrorCheck(bindingResult)) {
+        if (bindingResult.hasErrors()) {
             log.warn("errors={}", bindingResult);
             return "post/addForm";
         }
@@ -65,7 +67,7 @@ public class PostController {
     @GetMapping("/{id}")
     @ApiOperation(value = "게시글 읽기", notes = "게시글 id를 통해 게시물 하나를 읽어옴")
     public String readPost(@PathVariable Long id, Model model) {
-        List<CommentSaveForm> comments = commentService.namedCommentList(id);
+        List<CommentSaveForm> comments = namedCommentList(id);
         model.addAttribute("comments", comments);
         model.addAttribute("post", postService.get(id));
         return "post/post";
@@ -87,6 +89,7 @@ public class PostController {
             return "/post/editForm";
         }
         postEditFormSetProperties(postEditForm, request);
+        log.warn("update post id = {}", id);
         postService.update(id, postEditForm);
         redirectAttributes.addAttribute("id", id);
         return "redirect:/post/{id}";
@@ -95,7 +98,7 @@ public class PostController {
     @PostMapping("/delete")
     @ApiOperation(value="게시글 삭제", notes="게시글 삭제")
     public String deletePost(@RequestParam("id") Long id) {
-        commentService.deleteCommentInPost(id);
+        commentService.deleteByPostId(id);
         postService.delete(id);
         return "redirect:/post";
     }
@@ -109,10 +112,6 @@ public class PostController {
         return post;
     }
 
-    private boolean postErrorCheck(BindingResult bindingResult){
-        return bindingResult.hasErrors();
-    }
-
     private void setPostMemberId(Post post, HttpSession session) {
         if (session == null) {
             return;
@@ -124,5 +123,19 @@ public class PostController {
     private void postEditFormSetProperties(PostEditForm postEditForm, HttpServletRequest request) {
         postEditForm.setName(((Member) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER)).getName());
         postEditForm.setPostDate(new Date());
+    }
+
+    private List<CommentSaveForm> namedCommentList(Long postId) {
+        List<Comment> commentList = commentService.getByPostId(postId);
+        List<CommentSaveForm> namedCommentList = new ArrayList();
+        for (Comment comment : commentList) {
+            CommentSaveForm commentSaveForm = new CommentSaveForm();
+            commentSaveForm.setId(comment.getId());
+            commentSaveForm.setName(memberService.findById(comment.getMemberId()).getName());
+            commentSaveForm.setComment(comment.getComment());
+            commentSaveForm.setDate(comment.getDate());
+            namedCommentList.add(commentSaveForm);
+        }
+        return namedCommentList;
     }
 }

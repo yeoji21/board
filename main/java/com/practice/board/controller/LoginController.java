@@ -3,7 +3,6 @@ package com.practice.board.controller;
 import com.practice.board.domain.member.Member;
 import com.practice.board.domain.member.form.LoginForm;
 import com.practice.board.domain.member.SessionConst;
-import com.practice.board.mapper.MemberMapper;
 import com.practice.board.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

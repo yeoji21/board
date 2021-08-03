@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CommentService {
+public class LegacyCommentService {
     private final MemberMapper memberMapper;
     private final CommentMapper commentMapper;
 

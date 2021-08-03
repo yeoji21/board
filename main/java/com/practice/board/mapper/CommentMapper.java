@@ -13,9 +13,6 @@ public interface CommentMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void saveComment(@Param("comment") Comment comment);
 
-
-
-
     //게시물에 모든 댓글 가져오기
     @Select("select * from comment where post_id=#{postId}")
     @Results(id="CommentMap", value = {
