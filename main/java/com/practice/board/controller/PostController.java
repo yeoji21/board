@@ -85,23 +85,22 @@ public class PostController {
     @PutMapping("/{id}")
     @Transactional
     @ApiOperation(value="게시글 수정 적용", notes="게시글 수정 화면에서 입력한 정보로 게시글을 수정")
-    public String edit(@Validated @ModelAttribute("post") PostEditForm postEditForm, BindingResult bindingResult,
-                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String edit(@PathVariable Long id, @Validated @ModelAttribute("post") PostEditForm postEditForm,
+                       BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             log.warn("errors = {}", bindingResult);
             return "/post/editForm";
         }
         postEditFormSetProperties(postEditForm, request);
-        log.warn("update post id = {}", postEditForm.getId());
-        postService.update(postEditForm.getId(), postEditForm);
-        redirectAttributes.addAttribute("id", postEditForm.getId());
+        log.warn("update post id = {}", id);
+        postService.update(id, postEditForm);
         return "redirect:/posts/{id}";
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     @ApiOperation(value = "게시글 삭제", notes = "게시글 삭제")
-    public String deletePost(@RequestParam("id") Long id) {
+    public String deletePost(@PathVariable Long id) {
         commentService.deleteByPostId(id);
         postService.delete(id);
         return "redirect:/posts";

@@ -19,8 +19,6 @@
     <h2>글 쓰기</h2>
 </div>
 <form th:action="@{|/posts/${post.id}|}" th:method="put" th:object="${post}">
-    <input type="hidden" th:value="*{id}" name="id">
-
     <div th:if="${#fields.hasGlobalErrors()}">
     <p class="field-error" th:each="err:${#fields.globalErrors()}"
        th:text="${err}"></p>
@@ -37,9 +35,6 @@
         <tr>
             <td class="title">작성자</td>
             <td><label th:text="${session.loginMember.name}"></label></td>
-<!--            <td><label th:field="*{name}" th:text="*{name}" th:errorclass="field-error"></label></td>-->
-<!--            <div class="field-error" th:errors="*{name}"></div>-->
-<!--            <input type="hidden" th:field="*{name}">-->
         </tr>
         <tr>
             <td class="title">내 용</td>
@@ -47,7 +42,6 @@
                 <textarea th:field="*{content}" cols="72" rows="20" th:text="*{content}"
                           th:errorclass="field-error" autocomplete="off"></textarea>
                 <div class="field-error" th:errors="*{content}"></div>
-                <!--                <input th:field="*{content}" type="text">-->
             </td>
         </tr>
     </table>

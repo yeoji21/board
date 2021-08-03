@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,7 +17,7 @@ import java.util.Date;
 
 @Slf4j
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @Api(tags = "댓글 API")
 @RequiredArgsConstructor
 public class CommentController {
@@ -24,26 +25,27 @@ public class CommentController {
     private final CommentService commentService;
 
     @ApiOperation(value = "댓글 달기", notes = "게시글에 댓글 달기")
-    @PostMapping("/addComment")
-    public String addComment(@RequestParam("postId") Long postId, @RequestParam("memberId") Long memberId,
-                             @RequestParam("comment") String comment, RedirectAttributes redirectAttributes) {
+    @PostMapping("/{postId}")
+    public String addComment(@PathVariable Long postId, @RequestParam("memberId") Long memberId, @RequestParam("comment") String comment) {
         Comment newComment = getComment(postId, memberId, comment);
         commentService.save(newComment);
-        redirectAttributes.addAttribute("id", newComment.getPostId());
-        return "redirect:/post/{id}";
+//        redirectAttributes.addAttribute("id", newComment.getPostId());
+        return "redirect:/posts/{postId}";
     }
 
-    @PostMapping("/delete")
-    public String deleteComment(@RequestParam("id") Long id, @RequestParam("postId") Long postId, RedirectAttributes redirectAttributes) {
+    @Transactional
+    @DeleteMapping("/{id}")
+    public String deleteComment(@PathVariable Long id, @RequestParam("postId") Long postId, RedirectAttributes redirectAttributes) {
         commentService.delete(id);
-        redirectAttributes.addAttribute("id", postId);
-        return "redirect:/post/{id}";
+        redirectAttributes.addAttribute("postId", postId);
+        return "redirect:/posts/{postId}";
     }
 
-    @PostMapping("/update")
+    @Transactional
+    @PutMapping("/{id}")
     @ResponseBody
-    public Comment updateComment(@RequestParam("cid")Long cid, @RequestParam("content")String content){
-        CommentEditForm commentEditForm = getCommentEditForm(cid, content);
+    public Comment updateComment(@PathVariable Long id, @RequestParam("content")String content){
+        CommentEditForm commentEditForm = getCommentEditForm(id, content);
         commentService.update(commentEditForm);
         Comment comment = commentService.getById(commentEditForm.getCid());
         log.warn("comment = {}", comment.toString());

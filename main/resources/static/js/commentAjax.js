@@ -59,8 +59,8 @@ function addFields(commentId){
         var dateRoot = "#tdDate-"+commentId;
         // var date = new Date();
         $.ajax({
-            url: '/comment/update',
-            type: 'post',
+            url: '/comments/'+commentId,
+            type: 'put',
             dataType: "json",
             data: {'content': content, 'cid': commentId},
         }).done(function (comment) {
