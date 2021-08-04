@@ -43,6 +43,7 @@ public class PostController {
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
         model.addAttribute("lists", postService.getFivePosts(page));
         model.addAttribute("pages", postService.pages());
+        model.addAttribute("boldPage", page);
         return "post/list";
     }
 

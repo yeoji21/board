@@ -8,6 +8,11 @@ textarea {
     resize: none;
 }
 
+a{
+    color: black;
+    text-decoration: none;
+}
+
 .field-error {
     border-color: red;
     color:red;
