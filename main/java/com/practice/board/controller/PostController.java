@@ -42,7 +42,10 @@ public class PostController {
     @ApiOperation(value="게시판 화면 출력", notes="post의 id의 역순으로 게시물 5개씩 가져옴")
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
         model.addAttribute("lists", postService.getFivePosts(page));
-        model.addAttribute("pages", postService.pages());
+        int pages = postService.pages();
+        if(pages>10) pages=10;
+        model.addAttribute("start", 1);
+        model.addAttribute("pages", pages);
         model.addAttribute("boldPage", page);
         return "post/list";
     }
@@ -105,6 +108,18 @@ public class PostController {
         commentService.deleteByPostId(id);
         postService.delete(id);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/updatePages")
+    public String updatePages(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
+        int start = (page / 10+1)*10;
+        model.addAttribute("lists", postService.getFivePosts(start));
+        int max = postService.pages();
+        int end = start+10;
+        if(end > max) end = max;
+        model.addAttribute("start", start);
+        model.addAttribute("pages", end);
+        return "/post/list";
     }
 
     private Post postSaveFormToPost(PostSaveForm postSaveForm, HttpServletRequest request) {
