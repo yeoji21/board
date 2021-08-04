@@ -45,9 +45,16 @@
                     th:onclick="|location.href='/'|">홈으로</button>
         </div>
     </div>
-    <ul th:each="page: ${#numbers.sequence(1,pages)}" style="list-style: none; float: left">
-        <li><a th:text="${page}" class="" th:href="@{|/posts?page=${page}|}" th:class="${#strings.equals(page,boldPage)} ? 'fw-bold' : 'text-secondary'"></a></li>
+
+
+    <ul style="list-style: none; float: left" class="d-flex">
+        <li><a th:href="@{|/posts?page=1|}" > << </a></li>
+        <li th:each="page: ${#numbers.sequence(1,pages)}" class="mx-3">
+            <a th:text="${page}" class="" th:href="@{|/posts?page=${page}|}" th:class="${#strings.equals(page,boldPage)} ? 'fw-bold' : 'text-secondary'"></a>
+        </li>
+        <li><a th:href="@{|/posts?page=${pages}|}" > >> </a></li>
     </ul>
+
 </body>
 
 </html>
