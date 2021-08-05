@@ -41,28 +41,37 @@ public class PostController {
     @GetMapping
     @ApiOperation(value="게시판 화면 출력", notes="post의 id의 역순으로 게시물 5개씩 가져옴")
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
+
+        List<Post> lists = postService.getFivePosts(page);
+        lists.forEach(
+                post -> post.setComments(commentService.getNumByPostId(post.getId()))
+        );
+        model.addAttribute("lists", lists);
+        model.addAttribute("start", getPageStart(page));
+        model.addAttribute("pages", getPages(getPageStart(page), postService.pages()));
+        model.addAttribute("last", postService.pages());
+        model.addAttribute("boldPage", page);
+
+        return "post/list";
+    }
+
+    private int getPages(int start, int max) {
+        int pages = start+9;
+        if(pages>max) pages=max;
+        return pages;
+    }
+
+    private int getPageStart(int page) {
         int start = 1;
         if(page >= 10){
             if(page % 10 == 0){
-                start = (page/10-1)*10+1;
+                start = (page /10-1)*10+1;
             }
             else{
-                start = (page/10)*10+1;
+                start = (page /10)*10+1;
             }
         }
-
-        int max = postService.pages();
-        int pages = start+9;
-
-        if(pages>max) pages=max;
-
-
-        model.addAttribute("lists", postService.getFivePosts(page));
-        model.addAttribute("start", start);
-        model.addAttribute("pages", pages);
-        model.addAttribute("last", max);
-        model.addAttribute("boldPage", page);
-        return "post/list";
+        return start;
     }
 
     @GetMapping("/add")

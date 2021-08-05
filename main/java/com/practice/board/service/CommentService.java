@@ -15,5 +15,5 @@ public interface CommentService {
     void delete(Long id);
     void deleteByPostId(@Param("postId") Long postId);
     void update(CommentEditForm comment);
-
+    int getNumByPostId(Long postId);
 }

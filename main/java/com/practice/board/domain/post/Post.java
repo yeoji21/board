@@ -14,7 +14,7 @@ public class Post {
     private Long id;
     private Long memberId;
     private String name;
-
+    private int comments;
     private String title;
     private String content;
     @DateTimeFormat(pattern = "yyyy-MM-dd [HH:mm]")

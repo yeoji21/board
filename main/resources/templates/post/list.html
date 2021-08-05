@@ -28,8 +28,13 @@
             <tbody>
                 <tr th:each="list : ${lists}">
                     <td th:text="${list.id}"></td>
-                    <td><a href="#" th:href="@{|/posts/${list.id}|}" th:text="${list.title}" style="color: inherit; text-decoration: none;"></a></td>
-                    <td><a th:href="@{/members/{id}(id=${list.memberId})}" th:text="${list.name}" style="color: inherit; text-decoration: none;"></a></td>
+                    <td>
+                        <a class="d-inline-flex align-items-start" th:href="@{|/posts/${list.id}|}">
+                            <div th:text="${list.title}"></div>
+                            <div th:if="${list.comments}>0" th:text="|[${list.comments}]|" class="mx-3 text-secondary"></div>
+                        </a>
+                    </td>
+                    <td><a th:href="@{/members/{id}(id=${list.memberId})}" th:text="${list.name}"></a></td>
                     <td th:text="${{list.postDate}}"></td>
                 </tr>
         </table>
@@ -51,6 +56,7 @@
         <li>
             <a href="#" class="mx-3" th:with="before=${start}-10" th:onclick="|location.href = '@{/posts?(page=${before})}'|">Before</a>
         </li>
+
         <li class="d-flex" th:id="pageList">
             <div class="mx-3" th:each="page: ${#numbers.sequence(start,pages)}">
                 <a th:text="${page}" th:href="@{|/posts?page=${page}|}" th:class="${#strings.equals(page,boldPage)} ? 'fw-bold' : 'text-secondary'"></a>

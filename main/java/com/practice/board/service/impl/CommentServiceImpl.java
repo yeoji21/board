@@ -53,4 +53,9 @@ public class CommentServiceImpl implements CommentService {
         commentMapper.updateCommentAndDate(comment);
     }
 
+    @Override
+    public int getNumByPostId(Long postId) {
+        return commentMapper.getNumByPostId(postId);
+    }
+
 }
