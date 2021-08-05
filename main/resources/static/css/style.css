@@ -13,6 +13,11 @@ a{
     text-decoration: none;
 }
 
+td a {
+    display:block;
+    width:100%;
+}
+
 .field-error {
     border-color: red;
     color:red;
