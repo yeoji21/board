@@ -50,7 +50,7 @@
     <ul style="list-style: none; float: left" class="d-flex">
         <li><a th:href="@{|/posts?page=1|}" > << </a></li>
         <li>
-            <a href="#" class="mx-3" th:onclick="|paging(${pages})|">Before</a>
+            <a href="#" class="mx-3" th:with="before=${start}-10" th:onclick="|location.href = '@{/posts?(page=${before})}'|">Before</a>
         </li>
         <li class="d-flex" th:id="pageList">
             <div class="mx-3" th:each="page: ${#numbers.sequence(start,pages)}">
@@ -58,9 +58,9 @@
             </div>
         </li>
         <li>
-            <a href="#" class="mx-3" th:onclick="|location.href = '@{/posts/updatePages}'|">Next</a>
+            <a href="#" th:with="next=${pages}+1" class="mx-3" th:onclick="|location.href = '@{/posts?(page=${next})}'|">Next</a>
         </li>
-        <li><a th:href="@{|/posts?page=${pages}|}" > >> </a></li>
+        <li><a th:href="@{|/posts?page=${last}|}" > >> </a></li>
     </ul>
 
 </body>

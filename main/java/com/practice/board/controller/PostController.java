@@ -41,11 +41,20 @@ public class PostController {
     @GetMapping
     @ApiOperation(value="게시판 화면 출력", notes="post의 id의 역순으로 게시물 5개씩 가져옴")
     public String pageList(@RequestParam(value = "page", defaultValue ="1") int page, Model model) {
+        int start = 1;
+        if(page > 10){
+            start = (page/10)*10+1;
+        }
+
+        int max = postService.pages();
+        int pages = start+9;
+        if(pages>max) pages=max;
+
+
         model.addAttribute("lists", postService.getFivePosts(page));
-        int pages = postService.pages();
-        if(pages>10) pages=10;
-        model.addAttribute("start", 1);
+        model.addAttribute("start", start);
         model.addAttribute("pages", pages);
+        model.addAttribute("last", max);
         model.addAttribute("boldPage", page);
         return "post/list";
     }
