@@ -1,6 +1,7 @@
 package com.practice.board.domain.post.form;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class PostEditForm {
     private String name;
 
     @NotBlank
+    @Length(max=25)
     private String title;
     @NotNull
     private String content;

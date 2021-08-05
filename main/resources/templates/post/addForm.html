@@ -4,15 +4,7 @@
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <title>login</title>
-    <style>
-        .container{
-            max-width:560px;
-        }
-        .field-error {
-            border-color: red;
-            color:red;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 <div class="py-5 text-center">
@@ -36,7 +28,6 @@
             <td class="title">내 용</td>
             <td>
                 <textarea th:field="*{content}" cols="72" rows="20" autocomplete="off"></textarea>
-<!--                <input th:field="*{content}" type="text">-->
             </td>
         </tr>
     </table>

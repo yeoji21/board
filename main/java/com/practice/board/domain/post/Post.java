@@ -13,7 +13,8 @@ import java.util.Date;
 public class Post {
     private Long id;
     private Long memberId;
-    private String name;
+    private String
+            name;
     private int comments;
     private String title;
     private String content;
