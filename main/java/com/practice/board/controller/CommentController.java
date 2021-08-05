@@ -2,6 +2,7 @@ package com.practice.board.controller;
 
 
 import com.practice.board.domain.comment.Comment;
+import com.practice.board.domain.comment.form.CommentAddForm;
 import com.practice.board.domain.comment.form.CommentEditForm;
 import com.practice.board.service.CommentService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,8 +29,12 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 달기", notes = "게시글에 댓글 달기")
     @PostMapping("/{postId}")
-    public String addComment(@PathVariable Long postId, @RequestParam("memberId") Long memberId, @RequestParam("comment") String comment) {
-        Comment newComment = getComment(postId, memberId, comment);
+    public String addComment(@PathVariable Long postId,
+                             @Validated @ModelAttribute CommentAddForm commentAddForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/posts/{postId}";
+        }
+        Comment newComment = getComment(postId, commentAddForm.getMemberId(), commentAddForm.getComment());
         commentService.save(newComment);
         return "redirect:/posts/{postId}";
     }
