@@ -29,7 +29,6 @@ public class CommentController {
     public String addComment(@PathVariable Long postId, @RequestParam("memberId") Long memberId, @RequestParam("comment") String comment) {
         Comment newComment = getComment(postId, memberId, comment);
         commentService.save(newComment);
-//        redirectAttributes.addAttribute("id", newComment.getPostId());
         return "redirect:/posts/{postId}";
     }
 

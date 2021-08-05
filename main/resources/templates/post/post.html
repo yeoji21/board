@@ -6,15 +6,7 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" th:src="@{/js/commentAjax.js}"></script>
     <title>post</title>
-    <style>
-        .container{
-            max-width:560px;
-        }
-        .field-error {
-            border-color: red;
-            color:red;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 <div class="py-5 text-center">
@@ -78,15 +70,20 @@
             <td style="width: 10%; font-weight:bold;" th:text="${comment.name}"></td>
             <br>
             <td th:id="|container-${comment.id}|" style="width: 50%;font-weight:600;" th:text="${comment.comment}" th:value="${comment.comment}" th:styleappend="${post.name== comment.name ? 'color:blue;' : ''}"></td>
-            <td style="width: 10%; color:gray;"><button th:id="|reply-${comment.id}|" th:text="'답글 달기'" th:onclick="|reply(${comment.id})|" style="text-decoration: none; border: none;background: none;"></button></td>
-            <td th:id="|addText-${comment.id}|" style="width: 10%" th:if="${session.loginMember.name} eq ${comment.name}">
-                <form th:method="delete" th:action="@{|/comments/${comment.id}|}" class="d-flex">
-                    <input type="hidden" th:value="${post.id}" name="postId">
-                    <button type="button" th:onclick="|addFields(${comment.id})|" th:text="수정" style="color: gray; text-decoration: none; border: none;background: none;"></button>
-                    <button type="submit" th:text="삭제" style="color: gray; text-decoration: none; border: none;background: none;"></button>
-                </form>
+            <td style="width: 10%">
+                <div class="d-flex">
+                    <div th:text="${{comment.date}}" th:id="|tdDate-${comment.id}|"></div>
+                </div>
             </td>
-            <td style="width: 10%" th:text="${{comment.date}}" th:id="|tdDate-${comment.id}|"></td>
+            <td style="width: 20%">
+                <div th:id="|addText-${comment.id}|" th:if="${session.loginMember.name} eq ${comment.name}" class="mx-5">
+                    <form th:method="delete" th:action="@{|/comments/${comment.id}|}" class="d-flex">
+                        <input type="hidden" th:value="${post.id}" name="postId">
+                        <button type="button" th:onclick="|addFields(${comment.id})|" th:text="수정" style="color: gray; text-decoration: none; border: none;background: none;"></button>
+                        <button type="submit" th:text="삭제" style="color: gray; text-decoration: none; border: none;background: none;"></button>
+                    </form>
+                </div>
+            </td>
         </tr>
     </table>
 </div>

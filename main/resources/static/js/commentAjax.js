@@ -1,11 +1,11 @@
 function addFields(commentId){
     var container = document.getElementById("container-"+commentId);
     var addText = document.getElementById("addText-"+commentId);
+    // var textValue = document.getElementById("value-"+commentId).innerText;
     var textValue = container.innerText;
 
     let text1 = addText.childNodes[0];
     let text2 = addText.childNodes[1];
-
 
     while (addText.hasChildNodes()) {
         addText.removeChild(addText.lastChild);
