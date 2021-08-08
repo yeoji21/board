@@ -5,6 +5,7 @@ import com.practice.board.domain.comment.form.CommentEditForm;
 import com.practice.board.domain.comment.form.CommentSaveForm;
 import com.practice.board.mapper.CommentMapper;
 import com.practice.board.service.CommentService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
